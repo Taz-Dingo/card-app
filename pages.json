@@ -1,0 +1,66 @@
+{
+	"pages": [
+		//pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/card/card/card",
+			"style": {
+				"navigationBarTitleText": "名片"
+			}
+		},
+		{
+			"path": "pages/community/community/community",
+			"style": {
+				"navigationBarTitleText": "人脉"
+			}
+		},
+		{
+			"path": "pages/article/article/article",
+			"style": {
+				"navigationBarTitleText": "爆文"
+			}
+		},
+		{
+			"path": "pages/user_center/user_center/user_center",
+			"style": {
+				"navigationBarTitleText": "我的"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"borderStyle": "black",
+		"backgroundColor": "#333",
+		"color": "#8F8F94",
+		"selectedColor": "#f33e54",
+		"list": [{
+				"pagePath": "pages/card/card/card",
+				"iconPath": "static/img/tabbar/home.png",
+				"selectedIconPath": "static/img/tabbar/homeactive.png",
+				"text": "名片"
+			},
+			{
+				"pagePath": "pages/community/community/community",
+				"iconPath": "static/img/tabbar/guanzhu.png",
+				"selectedIconPath": "static/img/tabbar/guanzhuactive.png",
+				"text": "人脉"
+			},
+			{
+				"pagePath": "pages/article/article/article",
+				"iconPath": "static/img/tabbar/news.png",
+				"selectedIconPath": "static/img/tabbar/newsactive.png",
+				"text": "爆文"
+			},
+			{
+				"pagePath": "pages/user_center/user_center/user_center",
+				"iconPath": "static/img/tabbar/me.png",
+				"selectedIconPath": "static/img/tabbar/meactive.png",
+				"text": "我的"
+			}
+		]
+	}
+}
