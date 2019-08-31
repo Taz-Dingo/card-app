@@ -1,0 +1,23 @@
+.flex-row {
+	display: flex;
+}
+
+.gap {
+	padding-top: 20upx;
+	margin: -1upx 0;
+}
+
+.b-line{
+	position: relative;
+}
+.b-line::after{
+	position: absolute;
+	display: block;
+	content: '';
+	height: 1px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: #eee;
+	transform: scaleY(0.5);
+}

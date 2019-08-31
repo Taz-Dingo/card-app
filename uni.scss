@@ -13,6 +13,7 @@
  */
 
 /* 颜色变量 */
+$tcolor: #f6375b;
 
 /* 行为相关颜色 */
 $uni-color-primary: #007aff;
@@ -38,10 +39,18 @@ $uni-border-color:#c8c7cc;
 
 /* 尺寸变量 */
 
+/* 左右留白边距 */
+$page-padding: 20upx;
 /* 文字尺寸 */
 $uni-font-size-sm:24upx;
 $uni-font-size-base:28upx;
 $uni-font-size-lg:32upx;
+
+$fsize1:28upx;//字号  用于商品主标题等特殊标题
+$fsize2:26upx;//字号  用于栏目标题：如详情栏目，切换标题，分类栏目等
+$fsize3:24upx;//字号  常用字号，用于辅助标题
+$fsize4:21upx;//字号  用于列表页辅助标题文字，如简介，评价数等。
+
 
 /* 图片尺寸 */
 $uni-img-size-sm:40upx;
