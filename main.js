@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import App from './App'
+import http from './common/http'
 
 Vue.config.productionTip = false
 

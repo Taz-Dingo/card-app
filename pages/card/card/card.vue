@@ -1,15 +1,17 @@
 <template>
 	<view class="page">
 		<view class="card-box">
-			<pack-card></pack-card>
+			<pack-card :username="'陈明辉'" :userAvatar="'/static/logo.png'"></pack-card>
 		</view>
 		<view class="gap"></view>
 		<view class="card-handle-box">
 			<view class="card-handle">
 				<view class="card-handle-btn">存入手机</view>
-				<view class="card-handle-btn">存入手机</view>
-				<view class="card-handle-btn">存入手机</view>
-				<view class="card-handle-btn">存入手机</view>
+				<view class="card-handle-btn">回传名片</view>
+				<view class="card-handle-btn">发送名片</view>
+				<view class="card-handle-btn">
+					<navigator url="/pages/user_center/user_center/user_center" open-type="switchTab">我的</navigator>
+				</view>
 			</view>
 		</view>
 		<view class="gap"></view>
@@ -18,14 +20,14 @@
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe645;</text>
 					<text class="text">尚未完善</text>
-					<view class="btn">拨打</view>
+					<view class="btn" onClick="callUser">拨打</view>
 				</view>
 			</view>
 			<view class="contact-info">
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe645;</text>
 					<text class="text">尚未完善</text>
-					<view class="btn">拨打</view>
+					<view class="btn" onClick="copyWechat">复制</view>
 				</view>
 			</view>
 		</view>
@@ -76,6 +78,7 @@
 			</view>
 		</pack-box>
 		<!-- 品牌风采end -->
+		
 	</view>
 </template>
 
@@ -99,8 +102,33 @@
 				],
 			}
 		},
-		methods: {
+		onLoad() {
+			uni.request({
+				url: 'http://127.0.0.1:8000/api/user_info',
+				complete(res) {
+					console.log(res);
+				}
+			})
 			
+			uni.request({
+				url: 'http://127.0.0.1:8000/api/articles',
+				complete(res) {
+					console.log(res);
+				}
+			})
+			// this.$http.post('user_info').then(res => {
+			// 	console.log(res)
+			// }).catch(err => {});
+		},
+		methods: {
+			//打用户电话
+			callUser() {
+				
+			},
+			//复制用户微信号
+			copyWechat() {
+				
+			},
 		}
 	}
 </script>

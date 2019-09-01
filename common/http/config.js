@@ -1,6 +1,6 @@
 export default{
   //	开发者服务器接口地址
-	 host: "http://192.168.10.229/", 
+	 host: "http://127.0.0.1:8000/api/", 
 	 //	请求的参数	
 	 data: {},
 	 //	设置请求的 header，header 中不能设置 Referer。

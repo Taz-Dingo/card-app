@@ -16,24 +16,24 @@
 			<view class="pack-card-content-right">
 				<view class="flex-row">
 					<view class="user-tag">
-						<text class="iconfont">&#xe645;</text>
-						<text>人气: 0</text>
+						<text class="iconfont">&#xe833;</text>
+						<text>人气: {{popCount}}</text>
 					</view>
 					<view class="user-tag">
-						<text class="iconfont">&#xe645;</text>
-						<text>人气: 0</text>
+						<text class="iconfont">&#xe6b4;</text>
+						<text>点赞: {{upCount}}</text>
 					</view>
 					<view class="user-tag">
-						<text class="iconfont">&#xe645;</text>
-						<text>人气: 1</text>
+						<text class="iconfont">&#xe71f;</text>
+						<text>收藏: {{collectCount}}</text>
 					</view>
 				</view>
 				<view class="user-info">
 					<view class="user-avatar">
-						<image class="avatar" src="/static/logo.png" mode="aspectFill"></image>
+						<image class="avatar" :src="userAvatar" mode="aspectFill"></image>
 					</view>
 					<view class="user-name">
-						<text>陈明辉</text>
+						<text>{{username}}</text>
 					</view>
 				</view>
 			</view>
@@ -53,6 +53,34 @@
 			bgColor: {
 				type: String,
 				default: '#f6375b'
+			},
+			popCount: { //人气
+				type: [Number, String],
+				default: 0
+			},
+			upCount: { //点赞
+				type: [Number, String],
+				default: 0
+			},
+			collectCount: { //收藏
+				type: [Number, String],
+				default: 0
+			},
+			username: {
+				type: String,
+				default: ''
+			},
+			userAvatar: {
+				type: String,
+				default: ''
+			},
+			brandImg: {
+				type: String,
+				default: ''
+			},
+			brandName: {
+				type: String,
+				default: ''
 			},
 			tips: {
 				type: Array,

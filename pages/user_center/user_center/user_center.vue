@@ -30,14 +30,14 @@
 			<view class="list">
 				<view class="li noborder" >
 					<view class="icon"><image src="/static/user/card.png"></image></view>
-					<view class="text">我的名片</view>
+					<view class="text">名片夹</view>
 					<image class="to" src="/static/user/to.png"></image>
 				</view>
 			</view>
 			<view class="list">
 				<view class="li " @click="changeSkin">
 					<view class="icon"><image src="/static/user/skin.png"></image></view>
-					<view class="text">主题切换</view>
+					<view class="text">访客数据</view>
 					<image class="to" src="/static/user/to.png"></image>
 				</view>
 				<view class="li " >
@@ -97,7 +97,7 @@ page{
 		width: 100%;
 		height:200upx;
 		padding-top:100upx;
-		background-color:#4191ea;
+		background-color: $tcolor;
 	}
 }
 .box{

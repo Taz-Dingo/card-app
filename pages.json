@@ -35,30 +35,30 @@
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF"
 	},
 	"tabBar": {
 		"borderStyle": "black",
-		"backgroundColor": "#333",
+		"backgroundColor": "#FFFFFF",
 		"color": "#8F8F94",
 		"selectedColor": "#f33e54",
 		"list": [{
 				"pagePath": "pages/card/card/card",
-				"iconPath": "static/img/tabbar/home.png",
-				"selectedIconPath": "static/img/tabbar/homeactive.png",
+				"iconPath": "static/img/tabbar/card.png",
+				"selectedIconPath": "static/img/tabbar/cardactive.png",
 				"text": "名片"
 			},
 			{
 				"pagePath": "pages/community/community/community",
-				"iconPath": "static/img/tabbar/guanzhu.png",
-				"selectedIconPath": "static/img/tabbar/guanzhuactive.png",
+				"iconPath": "static/img/tabbar/community.png",
+				"selectedIconPath": "static/img/tabbar/communityactive.png",
 				"text": "人脉"
 			},
 			{
 				"pagePath": "pages/article/article/article",
-				"iconPath": "static/img/tabbar/news.png",
-				"selectedIconPath": "static/img/tabbar/newsactive.png",
+				"iconPath": "static/img/tabbar/hot.png",
+				"selectedIconPath": "static/img/tabbar/hotactive.png",
 				"text": "爆文"
 			},
 			{
