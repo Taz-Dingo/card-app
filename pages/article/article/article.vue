@@ -11,6 +11,26 @@
 				<text class="iconfont">&#xe645;</text>
 			</view>
 		</view>
+		<view class="cate-box">
+			<view class="brand">
+				<view class="brand-th flex-row">
+					<view class="flex-left">公司/品牌</view>
+					<view class="flex-right">修改</view>
+				</view>
+				<view class="brand-td flex-row">
+					<view class="flex-left"><pack-tag selected :text="'完美'"></pack-tag></view>
+				</view>
+			</view>
+			<view class="gap"></view>
+			<view class="cate">
+				<text>关注的类别</text>
+				<view class="">
+					<view v-for="(item,cIndex) in category" :key="cIndex">
+						<pack-tag :selected="item.selected" :text="item.name"></pack-tag>
+					</view>
+				</view>
+			</view>
+		</view>
 		<view class="">
 			<view class="uni-list">
 				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in listData" :key="key" @click="goDetail(value)">
@@ -32,9 +52,11 @@
 
 <script>
 	import segmentedControl from '@/components/segmented-control.vue'
+	import packTag from '@/components/pack-tag.vue'
 	export default {
 		components: {
 			segmentedControl,
+			packTag,
 		},
 		data() {
 			return {
@@ -49,7 +71,15 @@
 					{name: '行业'},
 				],
 				tabIndex: 0,
+				listData:[],
+				category: [],
 			}
+		},
+		onLoad() {
+			this.$http.post('article_category').then(res => {
+				this.category = res.data;
+				console.log(res);
+			}).catch(err => {});
 		},
 		methods: {
 			tabChange(index) {
@@ -64,34 +94,37 @@
 					data.time = new Date().getTime() + "";
 					data.pageSize = 10;
 				}
-				uni.request({
-					url: 'https://unidemo.dcloud.net.cn/api/news',
-					data: data,
-					success: (data) => {
-						if (data.statusCode == 200) {
-							let list = this.setTime(data.data);
-							this.listData = this.reload ? list : this.listData.concat(list);
-							this.last_id = list[list.length - 1].id;
-							this.reload = false;
-						}
-					},
-					fail: (data, code) => {
-						console.log('fail' + JSON.stringify(data));
-					}
-				})
 			},
 		}
 	}
 </script>
 
 <style lang="scss">
+page, .cate-box {
+	background: $uni-bg-color-grey;
+}
 .tag-box {
 	display: flex;
+	background-color: $uni-bg-color;
 	.tab-list {
-		max-width: 90%;
+		max-width: 88%;
 	}
 	.more {
-		width: 60upx;
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+}
+.cate-box {
+	position: relative;
+	width: 100%;
+	.brand, .cate{
+		padding: 10upx $page-padding;
+		background-color: $uni-bg-color;
+	}
+	.brand-td {
+		padding: 10upx 0;
 	}
 }
 .swiper-tab-list{

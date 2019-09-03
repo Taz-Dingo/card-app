@@ -1,7 +1,13 @@
 <template>
 	<view class="page">
 		<view class="card-box">
-			<pack-card :username="'陈明辉'" :userAvatar="'/static/logo.png'"></pack-card>
+			<pack-card 
+				:username="user.name"
+				:userAvatar="user.avatar ? user.avatar : defaultAvatar"
+				:popCount="user.pop_count"
+				:upCount="user.up_count"
+				:collectCount="user.collect_count"
+			></pack-card>
 		</view>
 		<view class="gap"></view>
 		<view class="card-handle-box">
@@ -19,14 +25,14 @@
 			<view class="contact-info">
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe645;</text>
-					<text class="text">尚未完善</text>
+					<text class="text">{{user.mobile ? user.mobile : '尚未完善'}}</text>
 					<view class="btn" onClick="callUser">拨打</view>
 				</view>
 			</view>
 			<view class="contact-info">
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe645;</text>
-					<text class="text">尚未完善</text>
+					<text class="text">{{user.mobile ? user.mobile : '尚未完善'}}</text>
 					<view class="btn" onClick="copyWechat">复制</view>
 				</view>
 			</view>
@@ -94,6 +100,8 @@
 		},
 		data() {
 			return {
+				user: {},
+				defaultAvatar: '/static/avatar_default.jpeg',
 				gloryList: [
 					{
 						time: '2017年5月5日',
@@ -102,23 +110,15 @@
 				],
 			}
 		},
-		onLoad() {
-			uni.request({
-				url: 'http://127.0.0.1:8000/api/user_info',
-				complete(res) {
-					console.log(res);
-				}
-			})
+		async onLoad() {
+			await this.$http.post('user_info').then(res => {
+				console.log(res);
+				this.user = res.data;
+			}).catch(err => {});
 			
-			uni.request({
-				url: 'http://127.0.0.1:8000/api/articles',
-				complete(res) {
-					console.log(res);
-				}
-			})
-			// this.$http.post('user_info').then(res => {
-			// 	console.log(res)
-			// }).catch(err => {});
+			this.$http.post('article', {brand_id: this.user.brand_id}).then(res => {
+				console.log(res);
+			}).catch(err => {});
 		},
 		methods: {
 			//打用户电话

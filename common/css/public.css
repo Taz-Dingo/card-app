@@ -2,6 +2,10 @@
 	display: flex;
 }
 
+.flex-left {
+	flex: 1;
+}
+
 .gap {
 	padding-top: 20upx;
 	margin: -1upx 0;

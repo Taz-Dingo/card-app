@@ -1,4 +1,13 @@
 <script>
+//登录令牌的设置与获取
+global.getToken = function() {
+	return uni.getStorageSync('auth_token');
+};
+global.setToken = function(token) {
+	if (token) uni.setStorageSync('auth_token', token);
+	else uni.removeStorageSync('auth_token');
+};
+	
 export default {
 	onLaunch: function() {
 		
