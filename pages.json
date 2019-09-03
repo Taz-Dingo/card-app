@@ -16,7 +16,8 @@
 		{
 			"path": "pages/article/article/article",
 			"style": {
-				"navigationBarTitleText": "爆文"
+				"navigationBarTitleText": "爆文",
+				"onReachBottomDistance": 100
 			}
 		},
 		{

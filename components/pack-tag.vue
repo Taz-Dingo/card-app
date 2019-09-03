@@ -24,7 +24,7 @@
 <style lang="scss">
 .pack-tag {
 	display: inline-block;
-	padding: 0 14upx;
+	padding: 0 32upx;
 	color: #555;
 	background-color: #c0c0c0;
 	border-radius: 8upx;

@@ -7,11 +7,11 @@
 					 :data-current="index" @click="tabChange(index)">{{tab.name}}</view>
 				</scroll-view>
 			</view>
-			<view class="more">
+			<view class="more" @click="showTags">
 				<text class="iconfont">&#xe645;</text>
 			</view>
 		</view>
-		<view class="cate-box">
+		<view class="cate-box" v-if="tagStatus" @touchmove.stop.prevent="stopPrevent">
 			<view class="brand">
 				<view class="brand-th flex-row">
 					<view class="flex-left">公司/品牌</view>
@@ -24,88 +24,137 @@
 			<view class="gap"></view>
 			<view class="cate">
 				<text>关注的类别</text>
-				<view class="">
-					<view v-for="(item,cIndex) in category" :key="cIndex">
+				<view class="cate-list">
+					<view class="cate-item" v-for="(item,cIndex) in category" :key="cIndex" @click="selectCate(cIndex)">
 						<pack-tag :selected="item.selected" :text="item.name"></pack-tag>
 					</view>
 				</view>
 			</view>
+			<view class="gap"></view>
+			<view class="cate-sure">
+				<view class="cate-sure-btn">确定</view>
+			</view>
 		</view>
-		<view class="">
+		<view class="article-list">
+			<view class="gap"></view>
 			<view class="uni-list">
-				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(value,key) in listData" :key="key" @click="goDetail(value)">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(article, key) in articleList" :key="key" @click="goDetail(value)">
 					<view class="uni-media-list">
-						<image class="uni-media-list-logo" :src="value.cover"></image>
+						<image class="uni-media-list-logo" :src="article.main_img"></image>
 						<view class="uni-media-list-body">
-							<view class="uni-media-list-text-top">{{value.title}}</view>
+							<view class="uni-media-list-text-top">{{article.title}}</view>
 							<view class="uni-media-list-text-bottom">
-								<text>{{value.author_name}}</text>
-								<text>{{value.published_at}}</text>
+								<view class="uni-media-list-text-bottom-left">
+									<view class="uni-media-list-tag">{{article.tag}}</view>
+									<text>{{article.created_date}}</text>
+								</view>
+								<view class="uni-media-list-text-bottom-right">
+									<text class="iconfont">&#xe833;</text>
+									<text>{{article.view_count}}</text>
+								</view>
 							</view>
 						</view>
 					</view>
 				</view>
 			</view>
 		</view>
+		<uni-load-more :status="loadingStatus"></uni-load-more>
 	</view>
 </template>
 
 <script>
 	import segmentedControl from '@/components/segmented-control.vue'
 	import packTag from '@/components/pack-tag.vue'
+	import uniLoadMore from '@/components/uni/uni-load-more.vue'
 	export default {
 		components: {
 			segmentedControl,
 			packTag,
+			uniLoadMore,
 		},
 		data() {
 			return {
 				tagList: [
-					{name: '行业'},
-					{name: '行业'},
-					{name: '行业'},
-					{name: '行业'},
-					{name: '行业'},
-					{name: '行业'},
-					{name: '行业'},
-					{name: '行业'},
+					{name: '精彩推荐', keyword: '推荐'},
+					{name: '完美', keyword: '完美'},
+					{name: '行业资讯', keyword: '行业资讯'},
+					{name: '健康养生', keyword: '健康养生'},
+					{name: '生活励志', keyword: '生活励志'},
 				],
 				tabIndex: 0,
-				listData:[],
+				tagStatus: false,
 				category: [],
+				articleList:[],
+				loadingStatus: 'more',
+				page: 1,
 			}
 		},
 		onLoad() {
 			this.$http.post('article_category').then(res => {
-				this.category = res.data;
-				console.log(res);
-			}).catch(err => {});
+				this.category = res.data.data
+				console.log(res.data.data)
+			}).catch(err => {})
+			this.loadArticle()
+		},
+		onReachBottom() {
+			if (this.articleList) {
+				this.loadArticle();
+			}
 		},
 		methods: {
 			tabChange(index) {
-				this.tabIndex = index;
+				this.tabIndex = index
+				this.loadArticle()
 			},
-			getList() {
-				var data = {
-					column: "id,post_id,title,author_name,cover,published_at" //需要的字段名
-				};
-				if (this.last_id) { //说明已有数据，目前处于上拉加载
-					data.minId = this.last_id;
-					data.time = new Date().getTime() + "";
-					data.pageSize = 10;
+			selectCate(index) {
+				let cate = this.category[index]
+				if (!cate.selected) {
+					
 				}
+				this.$set(cate, 'selected', !cate.selected)
+				
 			},
+			loadArticle() {
+				if (this.loadingStatus === 'loading' || this.loadingStatus === 'noMore') {
+					return false;
+				}
+				this.loadingStatus = 'loading';
+				const tag = this.tagList[this.tabIndex]
+				this.$http.post('article', {keyword: tag.keyword, page: this.page}).then(res => {
+					this.articleList = res.data.data.data
+					if (this.page < this.last_page) {
+						this.loadingStatus = 'more';
+						this.page ++;
+					} else {
+						this.loadingStatus = 'noMore';
+					}
+					console.log(res)
+				}).catch(err => {})
+			},
+			showTags() {
+				this.tagStatus = !this.tagStatus
+			},
+			articleDetail(id) {
+				
+			},
+			stopPrevent() {
+				
+			}
 		}
 	}
 </script>
 
 <style lang="scss">
+$nav-height: 86upx;
 page, .cate-box {
 	background: $uni-bg-color-grey;
 }
 .tag-box {
 	display: flex;
 	background-color: $uni-bg-color;
+	position: fixed;
+	z-index: 10;
+	max-height: $nav-height;
 	.tab-list {
 		max-width: 88%;
 	}
@@ -119,6 +168,9 @@ page, .cate-box {
 .cate-box {
 	position: relative;
 	width: 100%;
+	top: $nav-height;
+	z-index: 9;
+	min-height: 90vh;
 	.brand, .cate{
 		padding: 10upx $page-padding;
 		background-color: $uni-bg-color;
@@ -126,6 +178,28 @@ page, .cate-box {
 	.brand-td {
 		padding: 10upx 0;
 	}
+	.cate-list {
+		display: flex;
+		flex-wrap: wrap;
+		margin-top: 20upx;
+		.cate-item {
+			margin-right: 20upx;
+			margin-bottom: 30upx;
+		}
+	}
+}
+.cate-sure {
+	font-size: $fsize1;
+	background-color: $tcolor;
+	color: $uni-text-color-inverse;
+	text-align: center;
+	border-radius: 8upx;
+	padding: 16upx 0;
+	width: 85%;
+	margin: 0 auto;
+}
+.article-list {
+	padding-top: $nav-height;
 }
 .swiper-tab-list{
 	position: relative;
@@ -144,5 +218,49 @@ page, .cate-box {
 		left: 50%;
 		transform: translateX(-50%);
 	}
+}
+.uni-media-list-logo {
+	width: 180upx;
+	height: 140upx;
+}
+
+.uni-media-list-body {
+	height: auto;
+	justify-content: space-around;
+}
+
+.uni-media-list-text-top {
+	height: 74upx;
+	font-size: 28upx;
+	overflow: hidden;
+}
+
+.uni-media-list-text-bottom {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	&-left {
+		display: flex;
+		line-height: 1;
+		align-items: center;
+	}
+	&-right {
+		display: flex;
+		line-height: 1;
+		align-items: center;
+		.iconfont {
+			margin-right: 8upx;
+			color: $tcolor;
+		}
+	}
+}
+.uni-media-list-tag{
+	border: 1upx solid $tcolor;
+	color: $tcolor;
+	padding: 2upx 12upx;
+	line-height: 1;
+	border-radius: 5upx;
+	margin-right: 10upx;
 }
 </style>
