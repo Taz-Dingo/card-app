@@ -17,14 +17,12 @@ function apiRequest(options) {
 				resolve(response.data)
 			} else {
 				// 返回失败
-				//global.hideLoading();
-				// global.toast(global.i18n.t("common.base.net_error"));
 				reject(response)
 			}
 		}
-		_config.header['Authorization'] = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE1Njc1MjAwMzEsImV4cCI6MTU2NzUyMzYzMSwibmJmIjoxNTY3NTIwMDMxLCJqdGkiOiJlZGlCem13ckUxVmszNmlxIiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.bfjF07b1KS7F4_K2MErqvJzShy5Z0KDcoZx8lQS0bqs';
+		_config.header['Authorization'] = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE1Njc2MDI1MTAsImV4cCI6MTU2NzYwNjExMCwibmJmIjoxNTY3NjAyNTEwLCJqdGkiOiIyZm13eUZ6cU04b1ducFd5Iiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.3hjAZG8KGNy3drCgswo9iBaG3CAKP0BN6aIFQ38La6k';
 		var request = Object.assign({}, _config, options);
-						console.log(request);
+		console.log(request);
 		// 已初始化、开始请求
 		uni.request(request);
 	})

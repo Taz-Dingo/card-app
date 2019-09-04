@@ -1,27 +1,47 @@
 <template>
-	<view class="pack-article">
-		<view class="pack-article-image">
-			<image class="image" src="/static/logo.png" mode=""></image>
+	<view>
+		<view class="pack-article" v-if="!hideImg">
+			<view class="pack-article-image">
+				<image class="image" :src="article.main_img" mode=""></image>
+			</view>
+			<view class="pack-article-content">
+				<view class="pack-article-content-title">
+					{{article.title}}
+				</view>
+				<view class="pack-article-content-info">
+					<view class="uni-tag uni-tag-inverted uni-tag-small">{{article.tag}}</view>
+					<view class="text-left">
+						
+					</view>
+					<view class="text-right">
+						{{article.created_date}}
+					</view>
+				</view>
+			</view>
 		</view>
-		<view class="pack-article-content">
-			<view class="pack-article-content-title">
-				发的发俺的沙发发生的发生的
+		<view class="pack-article" v-else>
+			<view class="pack-article-content-title-one">
+				{{article.title}}
 			</view>
-			<view class="pack-article-content-info">
-				<view class="uni-tag uni-tag-inverted uni-tag-small">sdfsdf</view>
-				<view class="text-left">
-					1232131
-				</view>
-				<view class="text-right">
-					1231231
-				</view>
-			</view>
+			<view class="uni-tag uni-tag-inverted uni-tag-small">{{article.tag}}</view>
 		</view>
 	</view>
 </template>
 
 <script>
 	export default {
+		props: {
+			article: {
+				type: Object,
+				default() {
+					return {}
+				},
+			},
+			hideImg: {
+				type: Boolean,
+				default: true,
+			}
+		},
 		data() {
 			return {
 				
@@ -33,9 +53,11 @@
 <style lang="scss">
 .pack-article {
 	display: flex;
+	margin-bottom: 16upx;
+	align-items: center;
 	&-image {
-		width: 200upx;
-		height: 180upx;
+		width: 180upx;
+		height: 140upx;
 		.image {
 			height: 100%;
 			width: 100%;
@@ -46,20 +68,34 @@
 		display: flex;
 		justify-content: center;
 		flex-direction: column;
+		margin-left: 12upx;
 		
 		&-title {
-			font-size: $fsize1;
+			font-size: $fsize2;
 			display: -webkit-box;
 			-webkit-box-orient: vertical;
 			-webkit-line-clamp: 2;
 			overflow: hidden;
 			word-break: break-all;	//英文换行，以字母为依据
 			margin-bottom: 16upx;
+			line-height: 1.2;
+		}
+		&-title-one {
+			font-size: $fsize2;
+			display: -webkit-box;
+			-webkit-box-orient: vertical;
+			-webkit-line-clamp: 1;
+			overflow: hidden;
+			word-break: break-all;
+			line-height: 1.2;
+			flex: 1;
 		}
 		
 		&-info {
 			display: flex;
 			font-size: $fsize3;
+			align-items: center;
+			
 			.text-left {
 				flex: 1;
 				margin-left: 10upx;

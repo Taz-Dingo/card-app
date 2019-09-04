@@ -13,8 +13,8 @@
 		<view class="card-handle-box">
 			<view class="card-handle">
 				<view class="card-handle-btn">存入手机</view>
-				<view class="card-handle-btn">回传名片</view>
-				<view class="card-handle-btn">发送名片</view>
+				<view class="card-handle-btn" @tap="leaveCard">回传名片</view>
+				<button class="card-handle-btn" open-type="share">发送名片</button>
 				<view class="card-handle-btn">
 					<navigator url="/pages/user_center/user_center/user_center" open-type="switchTab">我的</navigator>
 				</view>
@@ -26,14 +26,14 @@
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe645;</text>
 					<text class="text">{{user.mobile ? user.mobile : '尚未完善'}}</text>
-					<view class="btn" onClick="callUser">拨打</view>
+					<view class="btn" @tap="callUser">拨打</view>
 				</view>
 			</view>
 			<view class="contact-info">
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe645;</text>
-					<text class="text">{{user.mobile ? user.mobile : '尚未完善'}}</text>
-					<view class="btn" onClick="copyWechat">复制</view>
+					<text class="text">{{user.wechat ? user.wechat : '尚未完善'}}</text>
+					<view class="btn" @tap="copyWechat">复制</view>
 				</view>
 			</view>
 		</view>
@@ -44,22 +44,25 @@
 				<text class="iconfont">&#xe645;</text>
 			</view>
 			<view slot="content">
-				<pack-article></pack-article>
+				<view v-for="(article,aIndex) in recArticles" :key="aIndex" @tap="articleDetail(article.id)">
+					<pack-article :article="article" :hideImg="aIndex !== 0"></pack-article>
+				</view>
 			</view>
 		</pack-box>
 		<!-- 品牌头条end -->
 		<view class="gap"></view>
 		<!-- 品牌视频介绍start -->
-		<pack-box :title="'视频介绍'">
+		<pack-box :title="'视频介绍'" v-if="user.brand && user.brand.video">
 			<view slot="title">
 				<text class="iconfont">&#xe645;</text>
 			</view>
 			<view slot="content">
-				<video class="card-video" src="" controls></video>
+				<video class="card-video" :src="user.brand.video" controls></video>
 			</view>
+			<view class="gap"></view>
 		</pack-box>
 		<!-- 品牌视频介绍end -->
-		<view class="gap"></view>
+	
 		<!-- 品牌荣誉start -->
 		<pack-box :title="'企业荣誉'">
 			<view slot="title">
@@ -102,6 +105,7 @@
 			return {
 				user: {},
 				defaultAvatar: '/static/avatar_default.jpeg',
+				recArticles: [],
 				gloryList: [
 					{
 						time: '2017年5月5日',
@@ -110,25 +114,53 @@
 				],
 			}
 		},
-		async onLoad() {
-			await this.$http.post('user_info').then(res => {
-				console.log(res);
-				this.user = res.data;
+		async onLoad(option) {
+			const user_id = option.user_id;
+			await this.$http.post('user_info', {user_id: user_id}).then(res => {
+				this.user = res.data.data;
+				console.log(this.user);
 			}).catch(err => {});
 			
-			this.$http.post('article', {brand_id: this.user.brand_id}).then(res => {
-				console.log(res);
+			this.$http.post('article', {brand_id: this.user.brand_id, recommend: 1}).then(res => {
+				this.recArticles = res.data.data.data;
 			}).catch(err => {});
 		},
 		methods: {
 			//打用户电话
 			callUser() {
-				
+				this.getUserContact('mobile').then(res => {
+					
+				})
 			},
 			//复制用户微信号
 			copyWechat() {
-				
+				this.getUserContact('wechat').then(res => {
+					
+				})
 			},
+			getUserContact(platform) {
+				return new Promise((resovel, reject) => {
+					this.$http.post('user_contact', {user_id: this.user.id}).then(res => {
+						const contacts = res.data.data
+						resovel(contacts[platform])
+					}).catch(err => {})
+				})
+			},
+			//回传名片
+			leaveCard() {
+				uni.showLoading()
+				this.$http.post('send_card', {card_id: this.user.card ? this.user.card.id : 0}).then(res => {
+					uni.showToast({
+						title: res.message
+					})
+					uni.hideLoading()
+				})
+			},
+			articleDetail(id) {
+				uni.navigateTo({
+					url: `/pages/article/article_detail/article_detail?id=${id}`
+				})
+			}
 		}
 	}
 </script>
@@ -157,6 +189,7 @@
 			margin: 10upx;
 			padding: 10upx 0;
 			border-radius: 8upx;
+			line-height: 1.8;
 		}
 	}
 	.contact-info-box {
@@ -188,6 +221,7 @@
 	.glory-list {
 		display: flex;
 		font-size: $fsize3;
+		align-items: center;
 		.glory-iconfont {
 			color: $tcolor;
 		}
