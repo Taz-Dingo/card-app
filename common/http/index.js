@@ -20,7 +20,7 @@ function apiRequest(options) {
 				reject(response)
 			}
 		}
-		_config.header['Authorization'] = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE1Njc2MDI1MTAsImV4cCI6MTU2NzYwNjExMCwibmJmIjoxNTY3NjAyNTEwLCJqdGkiOiIyZm13eUZ6cU04b1ducFd5Iiwic3ViIjoyLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.3hjAZG8KGNy3drCgswo9iBaG3CAKP0BN6aIFQ38La6k';
+		_config.header['Authorization'] = 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjgwMDAvYXBpL2F1dGgvbG9naW4iLCJpYXQiOjE1Njc2NzQ5NzUsImV4cCI6MTU2NzY3ODU3NSwibmJmIjoxNTY3Njc0OTc1LCJqdGkiOiJIbUNwMUZjWWFWb28zYjRRIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.ZOiw-9SXesgghYa4IcoCr5CJAGzwUgqlFGRTEI0ETOM';
 		var request = Object.assign({}, _config, options);
 		console.log(request);
 		// 已初始化、开始请求

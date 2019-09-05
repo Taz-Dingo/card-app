@@ -36,6 +36,36 @@
             "path" : "pages/article/article_detail/article_detail",
             "style" : {}
         }
+        ,{
+            "path" : "pages/community/community_net/community_net",
+            "style" : {
+							"navigationBarTitleText": "人脉市集"
+						}
+        }
+        ,{
+            "path" : "pages/community/community_seach/community_seach",
+            "style" : {
+            	"navigationBarTitleText": "搜索人脉"
+            }
+        }
+        ,{
+            "path" : "pages/community/community_friends/community_friends",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/card/card_list/card_list",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/card/card_manage/card_manage",
+            "style" : {}
+        }
+        ,{
+            "path" : "pages/community/community_history/community_history",
+            "style" : {
+            	"navigationBarTitleText": "人脉追踪"
+            }
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

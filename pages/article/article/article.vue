@@ -121,8 +121,8 @@
 				this.loadingStatus = 'loading';
 				const tag = this.tagList[this.tabIndex]
 				this.$http.post('article', {keyword: tag.keyword, page: this.page}).then(res => {
-					this.articleList = res.data.data.data
-					if (this.page < this.last_page) {
+					this.articleList = this.articleList.concat(res.data.data.data);
+					if (this.page < res.data.data.last_page) {
 						this.loadingStatus = 'more';
 						this.page ++;
 					} else {
