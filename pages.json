@@ -66,6 +66,10 @@
             	"navigationBarTitleText": "人脉追踪"
             }
         }
+        ,{
+            "path" : "pages/user_center/wechat_login/wechat_login",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

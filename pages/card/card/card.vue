@@ -116,12 +116,17 @@
 		},
 		async onLoad(option) {
 			const user_id = option.user_id;
-			await this.$http.post('user_info', {user_id: user_id}).then(res => {
+			console.log(option)
+			if (option.auth_token) {
+				console.log('token', option.auth_token)
+				global.setToken(option.auth_token);
+			}
+			await this.$http.auth('user_info', {user_id: user_id}).then(res => {
 				this.user = res.data.data;
 				console.log(this.user);
 			}).catch(err => {});
 			
-			this.$http.post('article', {brand_id: this.user.brand_id, recommend: 1}).then(res => {
+			this.$http.auth('article', {brand_id: this.user.brand_id, recommend: 1}).then(res => {
 				this.recArticles = res.data.data.data;
 			}).catch(err => {});
 		},
@@ -140,7 +145,7 @@
 			},
 			getUserContact(platform) {
 				return new Promise((resovel, reject) => {
-					this.$http.post('user_contact', {user_id: this.user.id}).then(res => {
+					this.$http.auth('user_contact', {user_id: this.user.id}).then(res => {
 						const contacts = res.data.data
 						resovel(contacts[platform])
 					}).catch(err => {})
@@ -149,7 +154,7 @@
 			//回传名片
 			leaveCard() {
 				uni.showLoading()
-				this.$http.post('send_card', {card_id: this.user.card ? this.user.card.id : 0}).then(res => {
+				this.$http.auth('send_card', {card_id: this.user.card ? this.user.card.id : 0}).then(res => {
 					uni.showToast({
 						title: res.message
 					})
