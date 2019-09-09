@@ -21,7 +21,9 @@
 				}).catch(err => {});
 			} else {
 				this.$http.post('demo_login').then(res => {
+					console.log(res.data.auth_token)
 					global.setToken(res.data.auth_token)
+					console.log(global.getToken())
 					uni.switchTab({
 						url: '/pages/card/card/card'
 					})

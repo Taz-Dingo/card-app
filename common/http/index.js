@@ -12,13 +12,13 @@ function apiRequest(options) {
 			
 			// 状态码200
 			if (response.statusCode === 200) {
-				
-				// if ([1001, 1002, 1003].indexOf(response.data.errcode)) {
-				// 	uni.redirectTo({
-				// 		url: '/pages/user_center/login/login'
-				// 	})
-				// 	return;
-				// }
+				console.log([1001, 1002, 1003].indexOf(response.data.errcode))
+				if ([1001, 1002, 1003].indexOf(response.data.errcode) !== -1) {
+					uni.redirectTo({
+						url: '/pages/user_center/login/login'
+					})
+					return;
+				}
 				resolve(response.data)
 			} else {
 				// 返回失败
@@ -53,8 +53,9 @@ function post(url = '', data = {}, config = {}) {
 }
 
 function auth(url = '', data = {}, config = {}) {
-		
+	return new Promise((resolve, reject) => {
 		const token = global.getToken()
+		console.log(token)
 		if (!token) {
 			uni.redirectTo({
 				url: '/pages/user_center/login/login'
@@ -62,7 +63,21 @@ function auth(url = '', data = {}, config = {}) {
 			return;
 		}
 		_config.header['Authorization'] = 'Bearer ' + token;
-		return post(url, data, config)
+		
+		let options = {
+			'url': apiurl(url),
+			'data': data,
+			'method': 'POST',
+			
+			...config
+		}
+		
+		apiRequest(options).then(res => {
+			resolve(res)
+		}).catch(err => {
+			reject(err)
+		})
+	})	
 }
 
 export default {

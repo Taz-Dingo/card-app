@@ -7,62 +7,45 @@
 						<view class="avator">
 							<img src="/static/user/face.jpg">
 						</view>
-						<view class="phone-number">18909XXXX67</view>
-					</view>
-					<view class="box-bd">
-						<view class="item">
-							<view class="icon"><img src="/static/user/message.png"></view>
-							<view class="text">我的通知</view>
-						</view>
-						<view class="item">
-							<view class="icon"><img src="/static/user/favorite.png"></view>
-							<view class="text">我的收藏</view>
-						</view>
-						<view class="item">
-							<view class="icon"><img src="/static/user/service.png"></view>
-							<view class="text">我的客服</view>
-						</view>
+						<view class="user-name">18909XXXX67</view>
+						<view class="vip-tag">普通会员</view>
 					</view>
 				</view>
 			</view>
+			<view class="vip-info">
+				<view class="icon iconfont">&#xe7eb;</view>
+				<view class="text">尚未开通</view>
+				<view>
+					<text>开通</text>
+					<text class="iconfont">&#xe628;</text>
+				</view>
+			</view>
+			<view class="setting iconfont">&#xe6ba;</view>
 		</view>
 		<view class="list-content">
 			<view class="list">
-				<view class="li noborder" >
-					<view class="icon"><image src="/static/user/card.png"></image></view>
+				<navigator class="li" url="/pages/card/card_list/card_list" open-type="navigate">
+					<view class="icon iconfont">&#xe658;</view>
 					<view class="text">名片夹</view>
-					<image class="to" src="/static/user/to.png"></image>
-				</view>
-			</view>
-			<view class="list">
+					<text class="iconfont">&#xe628;</text>
+				</navigator>
 				<view class="li " @click="changeSkin">
-					<view class="icon"><image src="/static/user/skin.png"></image></view>
+					<view class="icon iconfont">&#xe7d1;</view>
 					<view class="text">访客数据</view>
-					<image class="to" src="/static/user/to.png"></image>
+					<text class="iconfont">&#xe628;</text>
 				</view>
 				<view class="li " >
-					<view class="icon"><image src="/static/user/help.png"></image></view>
-					<view class="text">帮助中心</view>
-					<image class="to" src="/static/user/to.png"></image>
+					<view class="icon iconfont">&#xe6ba;</view>
+					<view class="text">名片管理</view>
+					<text class="iconfont">&#xe628;</text>
 				</view>
 				<view class="li " >
-					<view class="icon"><image src="/static/user/about.png"></image></view>
-					<view class="text">关于我们</view>
-					<image class="to" src="/static/user/to.png"></image>
-				</view>
-				<view class="li " >
-					<view class="icon"><image src="/static/user/opinion.png"></image></view>
-					<view class="text">意见反馈</view>
-					<image class="to" src="/static/user/to.png"></image>
+					<view class="icon iconfont">&#xe60d;</view>
+					<view class="text">联系客服</view>
+					<text class="iconfont">&#xe628;</text>
 				</view>
 			</view>
-			<view class="list">
-				<view class="li noborder" >
-					<view class="icon"><image src="/static/user/set.png"></image></view>
-					<view class="text">系统设置</view>
-					<image class="to" src="/static/user/to.png"></image>
-				</view>
-			</view>
+			
 		</view>
 	</view>
 </template>
@@ -91,43 +74,86 @@ page{
 }
 .header{
 	background: #fff;
-	height: 290upx;
-	padding-bottom: 110upx;
+	height: 460upx;
+	background-color: $tcolor;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	.setting {
+		position: absolute;
+		left: 20upx;
+		top: 20upx;
+		font-size: 40upx;
+		color: $uni-text-color-inverse;
+	}
 	.bg{
 		width: 100%;
-		height:200upx;
-		padding-top:100upx;
-		background-color: $tcolor;
+		height:320upx;
+		padding-top:70upx;
+		flex: 1;
+	}
+	.vip-info {
+		display: flex;
+		padding: 10upx $page-padding;
+		color: $uni-text-color-inverse;
+		background-color: rgba(255,255,255, 0.2);
+		align-items: center;
+		.icon{
+			flex-shrink:0;
+			width:50upx;
+			height:50upx;
+			line-height: 1.3;
+			font-size: 40upx;
+			color: #515151;
+			image{
+				width:50upx;
+				height:50upx;
+			}
+		}
+		.text{
+			flex: 1;
+			padding-left:20upx;
+		}
+		.to{
+			flex-shrink:0;
+			width:40upx;
+			height:40upx;
+		}
 	}
 }
 .box{
-	width: 650upx;
-	height: 280upx;
-	border-radius: 20upx;
+	width: 100%;
+	height: 320upx;
 	margin: 0 auto;
-	background: #fff;
-	box-shadow: 0 5upx 20upx 0upx rgba(0, 0, 150, .2); 
 	.box-hd{
 		display: flex;
 		flex-wrap: wrap;
 		flex-direction: row;
 		justify-content: center;
 		.avator{
-			width: 160upx;
-			height: 160upx;
+			width: 120upx;
+			height: 120upx;
 			background: #fff;
 			border: 5upx solid #fff;
 			border-radius: 50%;
-			margin-top: -80upx;
 			overflow: hidden;
 			img{
 				width: 100%;
 				height: 100%;
 			}
 		}
-		.phone-number{
+		.user-name{
+			color: $uni-text-color-inverse;
 			width: 100%;
 			text-align: center;
+			margin-top: 20upx;
+		}
+		.vip-tag {
+			background-color: #F0AD4E;
+			color: #333333;
+			padding: 0 10upx;
+			border-radius: 10upx;
+			margin-top: 16upx;
 		}
 	}
 	.box-bd{
@@ -173,9 +199,7 @@ page{
 		border: none;
 	}
 	.li{
-		width:92%;
-		height:100upx;
-		padding:0 4%;
+		padding:10upx $page-padding;
 		border-bottom:1px solid rgb(243,243,243);
 		display:flex;
 		align-items:center;
@@ -186,6 +210,7 @@ page{
 			flex-shrink:0;
 			width:50upx;
 			height:50upx;
+			color: $tcolor;
 			image{
 				width:50upx;
 				height:50upx;
