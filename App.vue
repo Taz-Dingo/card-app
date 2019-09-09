@@ -7,6 +7,23 @@ global.setToken = function(token) {
 	if (token) uni.setStorageSync('auth_token', token);
 	else uni.removeStorageSync('auth_token');
 };
+
+/**
+ * 判断是否是微信内置浏览器打开
+ */
+global.is_weixin = function (){
+		// #ifndef H5
+			return false
+		// #endif
+		// #ifdef H5
+			let ua = navigator.userAgent.toLowerCase()
+			if(ua.match(/MicroMessenger/i)=="micromessenger") {
+				return true
+			} else {
+				return false
+			}
+		// #endif
+}
 	
 export default {
 	onLaunch: function() {

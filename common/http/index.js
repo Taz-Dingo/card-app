@@ -12,6 +12,13 @@ function apiRequest(options) {
 			
 			// 状态码200
 			if (response.statusCode === 200) {
+				
+				// if ([1001, 1002, 1003].indexOf(response.data.errcode)) {
+				// 	uni.redirectTo({
+				// 		url: '/pages/user_center/login/login'
+				// 	})
+				// 	return;
+				// }
 				resolve(response.data)
 			} else {
 				// 返回失败
@@ -50,7 +57,7 @@ function auth(url = '', data = {}, config = {}) {
 		const token = global.getToken()
 		if (!token) {
 			uni.redirectTo({
-				url: '/pages/user_center/wechat_login/wechat_login'
+				url: '/pages/user_center/login/login'
 			})
 			return;
 		}

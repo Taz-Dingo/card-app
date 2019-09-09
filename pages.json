@@ -67,7 +67,7 @@
             }
         }
         ,{
-            "path" : "pages/user_center/wechat_login/wechat_login",
+            "path" : "pages/user_center/login/login",
             "style" : {}
         }
     ],
