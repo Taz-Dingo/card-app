@@ -121,10 +121,10 @@
 				console.log('token', option.auth_token)
 				global.setToken(option.auth_token);
 			}
-			await this.$http.auth('user_info', {user_id: user_id}).then(res => {
-				this.user = res.data.data;
-				console.log(this.user);
-			}).catch(err => {});
+			await this.$store.dispatch("loadUserInfo").then(user => {
+				console.log('user',user)
+				this.user = user;
+			});
 			
 			this.$http.auth('article', {brand_id: this.user.brand_id, recommend: 1}).then(res => {
 				this.recArticles = res.data.data.data;

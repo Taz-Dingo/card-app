@@ -21,10 +21,13 @@
 				}).catch(err => {});
 			} else {
 				this.$http.post('demo_login').then(res => {
-					global.setToken(res.data.auth_token)
-					uni.switchTab({
-						url: '/pages/card/card/card'
-					})
+					if (res.errcode === 0) {
+						console.log(res.data.auth_token)
+						global.setToken(res.data.auth_token)
+						uni.switchTab({
+							url: '/pages/card/card/card'
+						})
+					}
 				}).catch(err => {});
 			}
 			// #endif

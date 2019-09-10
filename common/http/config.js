@@ -1,7 +1,7 @@
 export default{
   //	开发者服务器接口地址
 	 //host: "http://tfzub2.natappfree.cc/api/", 
-	 host: "http://127.0.0.1/api/",
+	 host: "http://127.0.0.1:8000/api/",
 	 //	请求的参数	
 	 data: {},
 	 //	设置请求的 header，header 中不能设置 Referer。

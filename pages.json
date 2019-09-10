@@ -54,7 +54,9 @@
         }
         ,{
             "path" : "pages/card/card_list/card_list",
-            "style" : {}
+			"style" : {
+				"navigationBarTitleText": "名片夹"
+			}
         }
         ,{
             "path" : "pages/card/card_manage/card_manage",
