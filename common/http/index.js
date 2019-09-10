@@ -62,6 +62,7 @@ function auth(url = '', data = {}, config = {}) {
 			return;
 		}
 		_config.header['Authorization'] = 'Bearer ' + token;
+		console.log(token);
 		return post(url, data, config)
 }
 
