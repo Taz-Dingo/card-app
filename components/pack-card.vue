@@ -5,7 +5,7 @@
 		}">
 			<view class="pack-card-content-left">
 				<view class="brand">
-					111
+					葡萄
 				</view>
 				<view class="tips">
 					<view v-for="(tip,index) in tips" :key="index">
@@ -39,7 +39,7 @@
 			</view>
 			<view class="pack-card-content-qrcode">
 				<view class="qrcode">
-					
+					<text class="iconfont">&#xe6d2;</text>
 				</view>
 				<text>名片码</text>
 			</view>

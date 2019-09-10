@@ -176,6 +176,7 @@
 	}
 	.card-box {
 		padding: 0 $page-padding;
+		margin-top: 16upx;
 	}
 	.card-handle-box {
 		background-color: $uni-bg-color;

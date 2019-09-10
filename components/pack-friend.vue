@@ -7,17 +7,14 @@
 			<view class="mid">
 				<view class="">
 					<text>{{user.name}}</text>
-					<view class="office" v-if="user.card && user.card.office">
-						{{user.card.office}}
+					<view class="collect-info">
+						<text class="tag">收藏于</text>
+						<text>{{user.created_at}}</text>
 					</view>
 				</view>
-				<view class="brand" v-if="user.brand">
-					{{user.brand.name}}
-				</view>
 			</view>
-			<view class="btn-box" :class="{'disabled': user.added}" @tap="add(user)">
-				<text v-if="!user.added">添加</text>
-				<text v-else>已添加</text>
+			<view class="btn-box">
+				<text class="iconfont">&#xe60e;</text>
 			</view>
 		</view>
 	</view>
@@ -70,15 +67,27 @@
 		flex: 1;
 		display: flex;
 		flex-direction: row;
+		.collect-info {
+			font-size: $fsize4;
+			.tag {
+				background-color: $tcolor;
+				color: #fff;
+				padding: 1upx 6upx;
+				margin-right: 6upx;
+			}
+		}
 	}
 	.btn-box {
 		border: 1upx solid $tcolor;
 		padding: 2upx 0;
 		text-align: center;
-		width: 140upx;
 		color: $tcolor;
 		font-size: $fsize2;
-		border-radius: 25upx;
+		border-radius: 50%;
+		display: flex;
+		align-items: center;
+		height: 35upx;
+		width: 35upx;
 		&.disabled {
 			background-color: #c0c0c0;
 			color: #fff;

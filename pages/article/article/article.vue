@@ -81,6 +81,7 @@
 					{name: '健康养生', keyword: '健康养生'},
 					{name: '生活励志', keyword: '生活励志'},
 				],
+				user: {},
 				tabIndex: 0,
 				tagStatus: false,
 				category: [],
@@ -90,6 +91,11 @@
 			}
 		},
 		onLoad() {
+			this.$store.dispatch("loadUserInfo").then(user => {
+				console.log('user',user)
+				this.user = user;
+			});
+			
 			this.$http.post('article_category').then(res => {
 				this.category = res.data.data
 				console.log(res.data.data)

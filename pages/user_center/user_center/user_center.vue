@@ -5,9 +5,9 @@
 				<view class="box">
 					<view class="box-hd">
 						<view class="avator">
-							<img src="/static/user/face.jpg">
+							<image class="image" :src="user.avatar ? user.avatar : defaultAvatar" mode=""></image>
 						</view>
-						<view class="user-name">18909XXXX67</view>
+						<view class="user-name">{{user.name}}</view>
 						<view class="vip-tag">普通会员</view>
 					</view>
 				</view>
@@ -53,16 +53,17 @@
 	export default {
 		data() {
 			return {
+				user: {},
+				defaultAvatar: '/static/avatar_default.jpeg',
 			};
 		},
 		onLoad() {
+			this.$store.dispatch("loadUserInfo").then(user => {
+				console.log('user',user)
+				this.user = user;
+			});
 		},
 		methods: {
-			changeSkin(){
-				uni.navigateTo({
-						url: '../skin-change/skin-change'
-				});
-			},
 		}
 	}
 </script>
@@ -137,7 +138,7 @@ page{
 			border: 5upx solid #fff;
 			border-radius: 50%;
 			overflow: hidden;
-			img{
+			.image{
 				width: 100%;
 				height: 100%;
 			}
