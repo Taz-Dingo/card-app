@@ -58,7 +58,6 @@ function post(url = '', data = {}, config = {}) {
 function auth(url = '', data = {}, config = {}) {
 	return new Promise((resolve, reject) => {
 		const token = global.getToken()
-		console.log(token)
 		if (!token) {
 			uni.redirectTo({
 				url: '/pages/user_center/login/login'

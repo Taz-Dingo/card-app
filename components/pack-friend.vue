@@ -1,6 +1,6 @@
 <template>
 	<view class="pack-user b-line">
-		<view class="pack-user-box">
+		<view class="pack-user-box" @tap="viewUserCard">
 			<view class="avatar">
 				<image class="image" src="/static/avatar_default.jpeg" mode=""></image>
 			</view>
@@ -13,7 +13,7 @@
 					</view>
 				</view>
 			</view>
-			<view class="btn-box">
+			<view class="btn-box" @click.stop.prevent="stopPrevent">
 				<text class="iconfont">&#xe60e;</text>
 			</view>
 		</view>
@@ -36,12 +36,10 @@
 			};
 		},
 		methods: {
-			add(user) {
-				if (user.added) {
-					return
-				}
-				this.$emit('add', user)
-			}
+			viewUserCard() {
+				this.$emit('click', this.user.id)
+			},
+			stopPrevent() {}
 		}
 	}
 </script>

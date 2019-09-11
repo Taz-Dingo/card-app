@@ -120,13 +120,15 @@
 			}
 		},
 		async onLoad(option) {
-			const user_id = option.user_id;
-			console.log(option)
 			if (option.auth_token) {
 				console.log('token', option.auth_token)
 				global.setToken(option.auth_token);
 			}
-			await this.loadUser(user_id);
+		},
+		async onShow() {
+			const card_user_id = uni.getStorageSync('card_user_id')
+			console.log(card_user_id)
+			await this.loadUser(card_user_id)
 			
 			this.$http.auth('article', {brand_id: this.user.brand_id, recommend: 1}).then(res => {
 				this.recArticles = res.data.data.data;
@@ -138,6 +140,10 @@
 				this.video = res.data.video;
 				this.music = res.data.music;
 			}).catch(err => {});
+		},
+		onHide() {
+			console.log('hide')
+			uni.setStorageSync('card_user_id', null)
 		},
 		methods: {
 			//打用户电话
@@ -186,7 +192,7 @@
 				}).catch(err => {});
 			},
 			async loadUser(user_id) {
-				await this.$http.auth("user_info", {user_id: user_id ? user_id : this.user.id}).then(res=>{
+				await this.$http.auth("user_info", {user_id: user_id}).then(res=>{
 						if (res.errcode === 0) {
 							this.user = res.data.data;
 						}

@@ -2,10 +2,10 @@
 	<view>
 		<view v-if="loaded && dataList.length">
 			<view v-for="(user,index) in dataList" :key="index">
-				<pack-friend :user="user"></pack-friend>
+				<pack-friend :user="user" @click="viewUserCard"></pack-friend>
 			</view>
 		</view>
-		<view v-else class="empty">
+		<view v-else-if="loaded && dataList.length === 0" class="empty">
 			<image class="img" src="/static/no_data.png" mode="scaleToFill"></image>
 			<text>你还没有好友，快去添加吧</text>
 			<button class="btn-add btn-sm" @tap="addUser">去添加</button>
@@ -37,6 +37,12 @@
 			addUser() {
 				uni.navigateTo({
 					url: '/pages/community/community_net/community_net'
+				})
+			},
+			viewUserCard(user_id) {
+				uni.setStorageSync('card_user_id', user_id)
+				uni.switchTab({
+					url: `/pages/card/card/card`
 				})
 			}
 		}

@@ -2,6 +2,7 @@
 	<view>
 		<view class="article-header">
 			<view class="article-header-box" :style="{'backgroundImage': 'url('+article.main_img+')'}">
+				<view class="article-header-box-mask"></view>
 				<view class="header-view">
 					<view class="article-title">
 						<view class="title">{{article.title}}</view>
@@ -90,100 +91,110 @@ page {
 .article-header {
 	min-height: 460upx;
 	&-box {
-			min-height: 240upx;
-			padding: $page-padding;
-			background-size: cover;
-			background-repeat: no-repeat;
+		min-height: 240upx;
+		padding: $page-padding;
+		background-size: cover;
+		background-repeat: no-repeat;
+		display: flex;
+		flex-direction: column;
+		position: relative;
+		&-mask {
+			position: absolute;
+			top: 0;
+			left: 0;
+			background-color: rgba($color: #000000, $alpha: 0.5);
+			height: 100%;
+			width: 100%;
+		}
+		.article-header-extra {
+			display: flex;
+			justify-content: space-between;
+			color: #fff;
+		}
+		.header-view {
+			flex: 1;
+			width: 100%;
 			display: flex;
 			flex-direction: column;
-			.article-header-extra {
-				display: flex;
-				justify-content: space-between;
-				color: #fff;
+			z-index: 10;
+		}
+		.article-title {
+			flex: 1;
+			color: #fff;
+			margin-bottom: 10upx;
+			.title {
+				font-size: 36upx;
+				line-height: 1.6;
 			}
-			.header-view {
-				flex: 1;
-				width: 100%;
+		}
+		.card-info {
+			position: relative;
+			bottom: 0;
+			top: 50upx;
+			height: 200upx;
+			.card {
+				width: 90%;
+				height: 100%;
+				margin: 0 auto;
+				box-shadow: 0 2upx 0 #eee;
 				display: flex;
 				flex-direction: column;
-			}
-			.article-title {
-				flex: 1;
-				color: #fff;
-				margin-bottom: 10upx;
-				.title {
-					font-size: 36upx;
-					line-height: 1.6;
-				}
-			}
-			.card-info {
+				justify-content: center;
+				background-color: #fff;
 				position: relative;
-				bottom: 0;
-				top: 50upx;
-				height: 200upx;
-				.card {
-					width: 90%;
-					height: 100%;
-					margin: 0 auto;
-					box-shadow: 0 2upx 0 #eee;
-					display: flex;
-					flex-direction: column;
-					justify-content: center;
-					background-color: #fff;
+				.card-hd {
 					position: relative;
-					.card-hd {
-						position: relative;
-						top: -48upx;
-						z-index: 11;
-						text-align: center;
-						.brand-tag {
+					top: -48upx;
+					z-index: 11;
+					text-align: center;
+					.brand-tag {
+						color: $tcolor;
+						.tag {
+							background-color: #F0AD4E;
+							padding: 0 16upx;
+							border-radius: 6upx;
+						}
+					}
+					.user-contact {
+						display: flex;
+						.user-mobile, .user-wechat {
+							flex: 1;
 							color: $tcolor;
-							.tag {
-								background-color: #F0AD4E;
-								padding: 0 16upx;
-								border-radius: 6upx;
-							}
-						}
-						.user-contact {
 							display: flex;
-							.user-mobile, .user-wechat {
-								flex: 1;
-								color: $tcolor;
-								display: flex;
-								align-items: center;
-								justify-content: center;
-								.iconfont {
-									margin-right: 10upx;
-								}
+							align-items: center;
+							justify-content: center;
+							.iconfont {
+								margin-right: 10upx;
 							}
-							
 						}
-					}
-					.avator{
-						width: 120upx;
-						height: 120upx;
-						background: #fff;
-						border: 5upx solid #fff;
-						border-radius: 50%;
-						overflow: hidden;
-						margin: 0 auto;
-						.image{
-							width: 100%;
-							height: 100%;
-						}
-					}
-					.user-card {
-						position: absolute;
-						right: 0;
-						top: 10upx;
-						background-color: $tcolor;
-						color: #fff;
-						padding: 0 40upx;
-						border-radius: 20upx 0 0 20upx;
-						z-index: 12;
+						
 					}
 				}
+				.avator{
+					width: 120upx;
+					height: 120upx;
+					background: #fff;
+					border: 5upx solid #fff;
+					border-radius: 50%;
+					overflow: hidden;
+					margin: 0 auto;
+					.image{
+						width: 100%;
+						height: 100%;
+					}
+				}
+				.user-card {
+					position: absolute;
+					right: 0;
+					top: 10upx;
+					background-color: $tcolor;
+					color: #fff;
+					padding: 0 40upx;
+					border-radius: 20upx 0 0 20upx;
+					z-index: 12;
+				}
 			}
+		}
 	}
 }
 .article-content {
