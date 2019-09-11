@@ -76,6 +76,10 @@
             "path" : "pages/user_center/login/login",
             "style" : {}
         }
+        ,{
+            "path" : "pages/user_center/vip/vip",
+            "style" : {}
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
