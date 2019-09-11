@@ -34,7 +34,9 @@
 		}
 	    ,{
             "path" : "pages/article/article_detail/article_detail",
-            "style" : {}
+            "style" : {
+            	"navigationBarTitleText": "爆文内容"
+            }
         }
         ,{
             "path" : "pages/community/community_net/community_net",
@@ -60,7 +62,9 @@
         }
         ,{
             "path" : "pages/card/card_manage/card_manage",
-            "style" : {}
+            "style" : {
+            	"navigationBarTitleText": "名片管理"
+            }
         }
         ,{
             "path" : "pages/community/community_history/community_history",

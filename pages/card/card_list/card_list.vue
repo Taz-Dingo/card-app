@@ -6,6 +6,7 @@
 			</view>
 		</view>
 		<view v-else class="empty">
+			<image class="img" src="/static/no_data.png" mode="scaleToFill"></image>
 			<text>你还没有好友，快去添加吧</text>
 			<button class="btn-add btn-sm" @tap="addUser">去添加</button>
 		</view>
@@ -51,6 +52,10 @@ page {
 	flex-direction: column;
 	justify-content: center;
 	text-align: center;
+	.img {
+		margin: 0 auto;
+		margin-bottom: 20upx;
+	}
 }
 .btn-add{
 	margin-top: 26upx;

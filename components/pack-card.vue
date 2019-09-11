@@ -19,11 +19,11 @@
 						<text class="iconfont">&#xe833;</text>
 						<text>人气: {{popCount}}</text>
 					</view>
-					<view class="user-tag">
+					<view class="user-tag" @tap="upCard">
 						<text class="iconfont">&#xe6b4;</text>
 						<text>点赞: {{upCount}}</text>
 					</view>
-					<view class="user-tag">
+					<view class="user-tag" @tap="collectCard">
 						<text class="iconfont">&#xe71f;</text>
 						<text>收藏: {{collectCount}}</text>
 					</view>
@@ -97,6 +97,14 @@
 			return {
 				
 			};
+		},
+		methods: {
+			upCard() {
+				this.$emit('up')
+			},
+			collectCard() {
+				this.$emit('collect')
+			}
 		}
 	}
 </script>

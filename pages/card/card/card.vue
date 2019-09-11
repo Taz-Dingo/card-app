@@ -7,6 +7,8 @@
 				:popCount="user.pop_count"
 				:upCount="user.up_count"
 				:collectCount="user.collect_count"
+				@up="upCard"
+				@collet="collectCard"
 			></pack-card>
 		</view>
 		<view class="gap"></view>
@@ -85,6 +87,11 @@
 			<view slot="title">
 				<text class="iconfont">&#xe645;</text>
 			</view>
+			<view slot="content">
+				<view v-for="(img,mIndex) in mienImgs" :key="mIndex">
+					<image src="img" mode="aspectFit"></image>
+				</view>
+			</view>
 		</pack-box>
 		<!-- 品牌风采end -->
 		
@@ -106,12 +113,10 @@
 				user: {},
 				defaultAvatar: '/static/avatar_default.jpeg',
 				recArticles: [],
-				gloryList: [
-					{
-						time: '2017年5月5日',
-						content: '范德萨发生答复啊',
-					}
-				],
+				gloryList: [],
+				mienImgs: [],
+				video: '',
+				music: '',
 			}
 		},
 		async onLoad(option) {
@@ -121,13 +126,17 @@
 				console.log('token', option.auth_token)
 				global.setToken(option.auth_token);
 			}
-			await this.$store.dispatch("loadUserInfo").then(user => {
-				console.log('user',user)
-				this.user = user;
-			});
+			await this.loadUser(user_id);
 			
 			this.$http.auth('article', {brand_id: this.user.brand_id, recommend: 1}).then(res => {
 				this.recArticles = res.data.data.data;
+			}).catch(err => {});
+			
+			this.user.card_id && this.$http.auth('card_material', {card_id: this.user.card_id}).then(res => {
+				this.gloryList = res.data.gorys;
+				this.mienImgs = res.data.mien_imgs;
+				this.video = res.data.video;
+				this.music = res.data.music;
 			}).catch(err => {});
 		},
 		methods: {
@@ -165,6 +174,23 @@
 				uni.navigateTo({
 					url: `/pages/article/article_detail/article_detail?id=${id}`
 				})
+			},
+			upCard() {
+				this.$http.auth('card_up', {card_id: this.user.card_id}).then(res => {
+					this.loadUser();
+				}).catch(err => {});
+			},
+			collectCard() {
+				this.$http.auth('card_collect', {card_id: this.user.card_id}).then(res => {
+					this.loadUser();
+				}).catch(err => {});
+			},
+			async loadUser(user_id) {
+				await this.$http.auth("user_info", {user_id: user_id ? user_id : this.user.id}).then(res=>{
+						if (res.errcode === 0) {
+							this.user = res.data.data;
+						}
+				});
 			}
 		}
 	}

@@ -38,7 +38,7 @@
 		<view class="article-list">
 			<view class="gap"></view>
 			<view class="uni-list">
-				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(article, key) in articleList" :key="key" @click="goDetail(value)">
+				<view class="uni-list-cell" hover-class="uni-list-cell-hover" v-for="(article, key) in articleList" :key="key" @click="articleDetail(article.id)">
 					<view class="uni-media-list">
 						<image class="uni-media-list-logo" :src="article.main_img"></image>
 						<view class="uni-media-list-body">
@@ -96,7 +96,7 @@
 				this.user = user;
 			});
 			
-			this.$http.post('article_category').then(res => {
+			this.$http.auth('article_category').then(res => {
 				this.category = res.data.data
 				console.log(res.data.data)
 			}).catch(err => {})
@@ -126,7 +126,7 @@
 				}
 				this.loadingStatus = 'loading';
 				const tag = this.tagList[this.tabIndex]
-				this.$http.post('article', {keyword: tag.keyword, page: this.page}).then(res => {
+				this.$http.auth('article', {keyword: tag.keyword, page: this.page}).then(res => {
 					this.articleList = this.articleList.concat(res.data.data.data);
 					if (this.page < res.data.data.last_page) {
 						this.loadingStatus = 'more';
@@ -141,7 +141,9 @@
 				this.tagStatus = !this.tagStatus
 			},
 			articleDetail(id) {
-				
+				uni.navigateTo({
+					url: `/pages/article/article_detail/article_detail?id=${id}`
+				})
 			},
 			stopPrevent() {
 				

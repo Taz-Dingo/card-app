@@ -34,11 +34,11 @@
 					<view class="text">访客数据</view>
 					<text class="iconfont">&#xe628;</text>
 				</view>
-				<view class="li " >
+				<navigator class="li" url="/pages/card/card_manage/card_manage" open-type="navigate">
 					<view class="icon iconfont">&#xe6ba;</view>
 					<view class="text">名片管理</view>
 					<text class="iconfont">&#xe628;</text>
-				</view>
+				</navigator>
 				<view class="li " >
 					<view class="icon iconfont">&#xe60d;</view>
 					<view class="text">联系客服</view>

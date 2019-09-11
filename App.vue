@@ -24,6 +24,22 @@ global.is_weixin = function (){
 			}
 		// #endif
 }
+
+//消息提示
+global.toast = function(msg, callback) {
+	uni.showToast({
+		title: msg,
+		icon: 'none',
+		duration: 2000,
+		success: function() {
+			if (typeof callback == 'function') {
+				setTimeout(function() {
+					callback();
+				}, 2000);
+			}
+		}
+	});
+};
 	
 export default {
 	onLaunch: function() {

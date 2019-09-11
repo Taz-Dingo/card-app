@@ -18,8 +18,13 @@ function apiRequest(options) {
 					})
 					return;
 				}
-				resolve(response.data)
+				if (response.data.errcode !== 0) {
+					global.toast(res.message);
+				} else {
+					resolve(response.data)
+				}
 			} else {
+				global.toast('通讯异常');
 				// 返回失败
 				reject(response)
 			}
