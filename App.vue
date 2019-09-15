@@ -10,26 +10,31 @@ global.setToken = function(token) {
 
 global.loginAuth = function () {
 	// #ifdef H5
-	if (global.is_weixin()) {
-		global.http.post('wechat_login_url').then(res => {
-			if (res.errcode === 0) {
-				location.href = res.data.url
-			}
-		}).catch(err => {});
-	} else {
-		// uni.redirectTo({
-		// 	url: '/pages/user_center/login/login'
-		// })
-		global.http.post('demo_login').then(res => {
-			if (res.errcode === 0) {
-				console.log(res.data.auth_token)
-				global.setToken(res.data.auth_token)
-				uni.switchTab({
-					url: '/pages/card/card/card'
-				})
-			}
-		}).catch(err => {});
-	}
+	global.http.post('wechat_login_url').then(res => {
+		if (res.errcode === 0) {
+			location.href = res.data.url
+		}
+	}).catch(err => {});
+	// if (global.is_weixin()) {
+	// 	global.http.post('wechat_login_url').then(res => {
+	// 		if (res.errcode === 0) {
+	// 			location.href = res.data.url
+	// 		}
+	// 	}).catch(err => {});
+	// } else {
+	// 	// uni.redirectTo({
+	// 	// 	url: '/pages/user_center/login/login'
+	// 	// })
+	// 	global.http.post('demo_login').then(res => {
+	// 		if (res.errcode === 0) {
+	// 			console.log(res.data.auth_token)
+	// 			global.setToken(res.data.auth_token)
+	// 			uni.switchTab({
+	// 				url: '/pages/card/card/card'
+	// 			})
+	// 		}
+	// 	}).catch(err => {});
+	// }
 	// #endif
 }
 

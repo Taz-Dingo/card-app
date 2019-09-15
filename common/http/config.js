@@ -1,6 +1,6 @@
 export default{
   //	开发者服务器接口地址
-	 host: "http://zdmddk.natappfree.cc/api/", 
+	 host: "http://wj5j9p.natappfree.cc/api/", 
 	 //host: "http://127.0.0.1:8000/api/",
 	 //	请求的参数	
 	 data: {},
