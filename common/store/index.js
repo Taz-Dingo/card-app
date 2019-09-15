@@ -8,6 +8,7 @@ Vue.use(VueX)
 const state = {
 	inited:false,
 	userInfo:null, //登录的会员信息
+	systemInfo:null, //系统配置
 };
 // 创建store 实例
 export default new VueX.Store({

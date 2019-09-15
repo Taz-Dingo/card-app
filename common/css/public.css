@@ -25,3 +25,10 @@
 	background: #eee;
 	transform: scaleY(0.5);
 }
+
+.uni-input-wrapper {
+	font-size: 26upx;
+}
+.uni-textarea-placeholder {
+	font-size: 26upx;
+}

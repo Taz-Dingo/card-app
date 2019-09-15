@@ -2,7 +2,7 @@
 	<view>
 		<view v-if="loaded && dataList.length">
 			<view v-for="(user,index) in dataList" :key="index">
-				<pack-friend :user="user" @click="viewUserCard"></pack-friend>
+				<pack-friend :user="user" @click="viewUserCard" @call="callUser" @del="delFriend"></pack-friend>
 			</view>
 		</view>
 		<view v-else-if="loaded && dataList.length === 0" class="empty">
@@ -44,7 +44,28 @@
 				uni.switchTab({
 					url: `/pages/card/card/card`
 				})
-			}
+			},
+			//打用户电话
+			callUser(user_id) {
+				this.getUserContact('mobile', user_id).then(res => {
+					location.href = 'tel:' + res
+				})
+			},
+			delFriend(user_id) {
+				this.$http.auth('del_friend', {user_id: user_id}).then(res => {
+					global.toast('删除成功')
+					const index = this.dataList.findIndex(item => item.id == user_id)
+					this.dataList.splice(index, 1)
+				}).catch(err => {})
+			},
+			getUserContact(platform, user_id) {
+				return new Promise((resovel, reject) => {
+					this.$http.auth('user_contact', {user_id: user_id}).then(res => {
+						const contacts = res.data.data
+						resovel(contacts[platform])
+					}).catch(err => {})
+				})
+			},
 		}
 	}
 </script>

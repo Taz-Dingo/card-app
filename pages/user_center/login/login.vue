@@ -11,7 +11,7 @@
 				
 			}
 		},
-		onLoad() {
+		onShow() {
 			// #ifdef H5
 			if (global.is_weixin()) {
 				this.$http.post('wechat_login_url').then(res => {

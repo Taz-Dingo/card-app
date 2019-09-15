@@ -5,7 +5,7 @@
 		}">
 			<view class="pack-card-content-left">
 				<view class="brand">
-					葡萄
+					<image class="logo" :src="logo" mode=""></image>
 				</view>
 				<view class="tips">
 					<view v-for="(tip,index) in tips" :key="index">
@@ -34,6 +34,7 @@
 					</view>
 					<view class="user-name">
 						<text>{{username}}</text>
+						<text>{{brandName}}</text>
 					</view>
 				</view>
 			</view>
@@ -82,6 +83,10 @@
 				type: String,
 				default: ''
 			},
+			logo: {
+				type: String,
+				default: ''
+			},
 			tips: {
 				type: Array,
 				default() {
@@ -110,64 +115,74 @@
 </script>
 
 <style lang="scss">
-	.pack-card {
+.pack-card {
+	width: 100%;
+}
+.pack-card-content {
+	padding: 20upx;
+	padding-bottom: 60upx;
+	display: flex;
+	color: $uni-text-color-inverse;
+	position: relative;
+	
+	&-qrcode {
+		position: absolute;
+		bottom: 20upx;
 		width: 100%;
-	}
-	.pack-card-content {
-		padding: 20upx;
-		padding-bottom: 60upx;
+		margin-left: -20upx;
 		display: flex;
-		color: $uni-text-color-inverse;
-		position: relative;
-		
-		&-qrcode {
-			position: absolute;
-			bottom: 20upx;
-			width: 100%;
-			margin-left: -20upx;
+		flex-direction: column;
+		align-items: center;
+	}
+	
+	&-left {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		.brand {
+			margin: 50upx 0 0 50upx;
+			height: 120upx;
+			width: 120upx;
+			.logo {
+				height: 100%;
+				width: 100%;
+				border-radius: 50%;
+			}
+		}
+		.tips {
+			margin: 100upx 0 0 30upx;
+		}
+	}
+	
+	&-right {
+		.user-tag {
+			display: flex;
+			font-size: $fsize2;
+			flex-direction: column;
+			text-align: center;
+			margin: 0 10upx;
+		}
+		.user-info {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-		}
-		
-		&-left {
-			display: flex;
-			flex-direction: column;
-			flex: 1;
-			.brand {
-				margin: 50upx 0 0 50upx;
+			margin: 40upx 0 0 80upx;
+			.user-avatar {
+				height: 120upx;
+				width: 120upx;
+				.avatar {
+					height: 100%;
+					width: 100%;
+					border-radius: 50%;
+				}
 			}
-			.tips {
-				margin: 100upx 0 0 30upx;
-			}
-		}
-		
-		&-right {
-			.user-tag {
+			.user-name {
+				color: $uni-text-color;
 				display: flex;
-				font-size: $fsize2;
 				flex-direction: column;
 				text-align: center;
-				margin: 0 10upx;
-			}
-			.user-info {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				margin: 40upx 0 0 80upx;
-				.user-avatar {
-					height: 120upx;
-					width: 120upx;
-					.avatar {
-						height: 100%;
-						width: 100%;
-						border-radius: 50%;
-					}
-				}
-				.user-name {
-					color: $uni-text-color;
-				}
 			}
 		}
 	}
+}
 </style>

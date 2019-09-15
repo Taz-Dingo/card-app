@@ -4,21 +4,22 @@
 			<view class="tab-list">
 				<scroll-view id="tab-bar" class="uni-swiper-tab" scroll-x>
 					<view v-for="(tab,index) in tagList" :key="tab.id" :class="['swiper-tab-list',tabIndex==index ? 'active' : '']" :id="tab.id"
-					 :data-current="index" @click="tabChange(index)">{{tab.name}}</view>
+					 :data-current="index" @tap="tabChange(index)">{{tab.name}}</view>
 				</scroll-view>
 			</view>
-			<view class="more" @click="showTags">
-				<text class="iconfont">&#xe645;</text>
+			<view class="more" @tap="switchTags">
+				<text class="iconfont" v-if="!tagStatus">&#xe655;</text>
+				<text class="iconfont" v-else>&#xe667;</text>
 			</view>
 		</view>
 		<view class="cate-box" v-if="tagStatus" @touchmove.stop.prevent="stopPrevent">
 			<view class="brand">
 				<view class="brand-th flex-row">
 					<view class="flex-left">公司/品牌</view>
-					<view class="flex-right">修改</view>
+					<navigator class="flex-right" url="/pages/user_center/user_setting/user_setting">修改</navigator>
 				</view>
-				<view class="brand-td flex-row">
-					<view class="flex-left"><pack-tag selected :text="'完美'"></pack-tag></view>
+				<view class="brand-td flex-row" v-if="user.brand">
+					<view class="flex-left"><pack-tag selected :text="user.brand.name"></pack-tag></view>
 				</view>
 			</view>
 			<view class="gap"></view>
@@ -31,7 +32,7 @@
 				</view>
 			</view>
 			<view class="gap"></view>
-			<view class="cate-sure">
+			<view class="cate-sure" @tap="saveCate">
 				<view class="cate-sure-btn">确定</view>
 			</view>
 		</view>
@@ -75,8 +76,6 @@
 		data() {
 			return {
 				tagList: [
-					{name: '精彩推荐', keyword: '推荐'},
-					{name: '完美', keyword: '完美'},
 					{name: '行业资讯', keyword: '行业资讯'},
 					{name: '健康养生', keyword: '健康养生'},
 					{name: '生活励志', keyword: '生活励志'},
@@ -90,17 +89,22 @@
 				page: 1,
 			}
 		},
-		onLoad() {
-			this.$store.dispatch("loadUserInfo").then(user => {
-				console.log('user',user)
-				this.user = user;
-			});
-			
-			this.$http.auth('article_category').then(res => {
-				this.category = res.data.data
-				console.log(res.data.data)
+		async onLoad() {
+			await this.$http.auth('article_category').then(res => {
+				let category = res.data.data
+				const hisCate = uni.getStorageSync('category_seleced')
+				if (hisCate && hisCate.length) {
+					category.forEach(item => {
+						if (hisCate.findIndex(his => his.name === item.name) !== -1) {
+							item.selected = true
+						}
+					})
+				}
+				this.category = category
+				
 			}).catch(err => {})
-			this.loadArticle()
+			
+			this.loadData()
 		},
 		onReachBottom() {
 			if (this.articleList) {
@@ -108,17 +112,46 @@
 			}
 		},
 		methods: {
+			loadData() {
+				this.tagList = [
+					{name: '行业资讯', keyword: 'industry'},
+					{name: '健康养生', keyword: '健康养生'},
+					{name: '生活励志', keyword: '生活励志'},
+				]
+				this.tabIndex = 0
+				this.page = 1
+				
+				this.$store.dispatch("loadUserInfo").then(user => {
+					this.user = user
+					user.brand && this.tagList.unshift({
+						name: user.brand.name,
+						keyword: 'brand',
+					})
+					this.tagList.unshift({
+						name: '精彩推荐',
+						keyword: 'is_recommend',
+					})
+					const hisCate = uni.getStorageSync('category_seleced')
+					if (hisCate && hisCate.length) {
+						this.tagList = this.tagList.concat(hisCate)
+					}
+					this.loadArticle()
+				})
+			},
 			tabChange(index) {
 				this.tabIndex = index
+				this.page = 1
+				this.loadingStatus = 'more'
 				this.loadArticle()
 			},
 			selectCate(index) {
 				let cate = this.category[index]
-				if (!cate.selected) {
-					
-				}
 				this.$set(cate, 'selected', !cate.selected)
-				
+			},
+			saveCate() {
+				uni.setStorageSync('category_seleced', this.category.filter(item => item.selected))
+				this.switchTags()
+				this.loadData()
 			},
 			loadArticle() {
 				if (this.loadingStatus === 'loading' || this.loadingStatus === 'noMore') {
@@ -137,7 +170,7 @@
 					console.log(res)
 				}).catch(err => {})
 			},
-			showTags() {
+			switchTags() {
 				this.tagStatus = !this.tagStatus
 			},
 			articleDetail(id) {
@@ -164,17 +197,18 @@ page, .cate-box {
 	z-index: 10;
 	max-height: $nav-height;
 	.tab-list {
-		max-width: 88%;
+		width: 88vw;
 	}
 	.more {
-		flex: 1;
+		width: 12vw;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		color: $uni-text-color;
 	}
 }
 .cate-box {
-	position: relative;
+	position: fixed;
 	width: 100%;
 	top: $nav-height;
 	z-index: 9;
@@ -248,6 +282,7 @@ page, .cate-box {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	margin-top: 10upx;
 	&-left {
 		display: flex;
 		line-height: 1;

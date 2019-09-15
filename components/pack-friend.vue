@@ -14,7 +14,8 @@
 				</view>
 			</view>
 			<view class="btn-box" @click.stop.prevent="stopPrevent">
-				<text class="iconfont">&#xe60e;</text>
+				<view class="btn"><text class="iconfont" @tap="callUser">&#xe60e;</text></view>
+				<view class="btn del"><text class="iconfont" @tap="delUser">&#xe633;</text></view>
 			</view>
 		</view>
 	</view>
@@ -38,6 +39,12 @@
 		methods: {
 			viewUserCard() {
 				this.$emit('click', this.user.id)
+			},
+			callUser() {
+				this.$emit('call', this.user.id)
+			},
+			delUser() {
+				this.$emit('del', this.user.id)
 			},
 			stopPrevent() {}
 		}
@@ -76,20 +83,28 @@
 		}
 	}
 	.btn-box {
-		border: 1upx solid $tcolor;
-		padding: 2upx 0;
-		text-align: center;
-		color: $tcolor;
-		font-size: $fsize2;
-		border-radius: 50%;
 		display: flex;
-		align-items: center;
-		height: 35upx;
-		width: 35upx;
-		&.disabled {
-			background-color: #c0c0c0;
-			color: #fff;
-			border: 1upx solid #c0c0c0;
+		.btn {
+			border: 1upx solid $tcolor;
+			padding: 2upx 0;
+			text-align: center;
+			color: $tcolor;
+			font-size: $fsize2;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			height: 35upx;
+			width: 35upx;
+			margin-right: 10upx;
+			&.del {
+				color: #1296db;
+				border: 1upx solid #1296db;
+			}
+			&.disabled {
+				background-color: #c0c0c0;
+				color: #fff;
+				border: 1upx solid #c0c0c0;
+			}
 		}
 	}
 }

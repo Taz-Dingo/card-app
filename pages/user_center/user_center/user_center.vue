@@ -4,32 +4,37 @@
 			<view class="bg">
 				<view class="box">
 					<view class="box-hd">
-						<view class="avator">
+						<navigator class="avator" url="/pages/user_center/user_setting/user_setting">
 							<image class="image" :src="user.avatar ? user.avatar : defaultAvatar" mode=""></image>
-						</view>
+						</navigator>
 						<view class="user-name">{{user.name}}</view>
 						<view class="vip-tag">普通会员</view>
 					</view>
 				</view>
 			</view>
-			<view class="vip-info">
+			<navigator class="vip-info" url="/pages/user_center/vip/vip">
 				<view class="icon iconfont">&#xe7eb;</view>
 				<view class="text">尚未开通</view>
 				<view>
 					<text>开通</text>
 					<text class="iconfont">&#xe628;</text>
 				</view>
-			</view>
-			<view class="setting iconfont">&#xe6ba;</view>
+			</navigator>
+			<navigator class="setting iconfont" url="/pages/user_center/user_setting/user_setting" open-type="navigate">&#xe6ba;</navigator>
 		</view>
 		<view class="list-content">
 			<view class="list">
+				<navigator class="li" url="/pages/user_center/user_setting/user_setting" open-type="navigate">
+					<view class="icon iconfont">&#xe603;</view>
+					<view class="text">编辑信息</view>
+					<text class="iconfont">&#xe628;</text>
+				</navigator>
 				<navigator class="li" url="/pages/card/card_list/card_list" open-type="navigate">
 					<view class="icon iconfont">&#xe658;</view>
 					<view class="text">名片夹</view>
 					<text class="iconfont">&#xe628;</text>
 				</navigator>
-				<view class="li " @click="changeSkin">
+				<view class="li " @tap="toUserVisitor">
 					<view class="icon iconfont">&#xe7d1;</view>
 					<view class="text">访客数据</view>
 					<text class="iconfont">&#xe628;</text>
@@ -39,11 +44,11 @@
 					<view class="text">名片管理</view>
 					<text class="iconfont">&#xe628;</text>
 				</navigator>
-				<view class="li " >
+				<!-- <view class="li " >
 					<view class="icon iconfont">&#xe60d;</view>
 					<view class="text">联系客服</view>
 					<text class="iconfont">&#xe628;</text>
-				</view>
+				</view> -->
 			</view>
 			
 		</view>
@@ -64,6 +69,11 @@
 			});
 		},
 		methods: {
+			toUserVisitor() {
+				uni.navigateTo({
+					url: '/pages/user_center/user_visitor/user_visitor'
+				})
+			},
 		}
 	}
 </script>

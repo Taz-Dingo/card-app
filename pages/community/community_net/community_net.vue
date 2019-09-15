@@ -66,7 +66,7 @@
 			},
 			searchUser() {
 				uni.navigateTo({
-					url: '/pages/community/community_seach/community_seach'
+					url: '/pages/community/community_search/community_search'
 				})
 			},
 			add(user) {
@@ -92,6 +92,7 @@ page {
 	background-color: #fff;
 	padding: 0 20upx;
 	border-radius: 6upx;
+	justify-content: space-between;
 }
 .net-header {
 	height: 160upx;

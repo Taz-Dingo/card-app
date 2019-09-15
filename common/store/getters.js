@@ -1,7 +1,10 @@
 const userInfo = state => {
-    return state.userInfo;
-  }
+	return state.userInfo
+},systemInfo = state => {
+	return state.systemInfo
+}
 	
 export {
-  userInfo
+  userInfo,
+  systemInfo
 }
