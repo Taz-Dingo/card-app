@@ -15,13 +15,10 @@ function apiRequest(options) {
 				if ([1001, 1002, 1003].indexOf(response.data.errcode) !== -1) {
 					global.loginAuth()
 				}
-				if (response.data.errcode === 1005) {
-					uni.navigateTo({
-						url: '/pages/brand/brand_select/brand_select?init=1'
-					})
-				}
+
 				if (response.data.errcode !== 0) {
-					global.toast(response.data.message);
+					response.data.errcode === 1000 && global.toast(response.data.message);
+					reject(response.data)
 				} else {
 					resolve(response.data)
 				}

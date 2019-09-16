@@ -86,6 +86,10 @@ module.exports = {
 				case 'notnull':
 					if(data[rule[i].name] == null || data[rule[i].name].length < 1){this.error = rule[i].errorMsg; return false;}
 				break;
+				case 'phone':
+					var reg = /^1\d{10}$/;
+					if (!reg.test(data[rule[i].name])) { this.error = rule[i].errorMsg; return false; }
+					break;
 			}
 		}
 		return true;
