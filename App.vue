@@ -29,9 +29,9 @@ global.loginAuth = function () {
 			if (res.errcode === 0) {
 				console.log(res.data.auth_token)
 				global.setToken(res.data.auth_token)
-				uni.switchTab({
-					url: '/pages/card/card/card'
-				})
+				// uni.switchTab({
+				// 	url: '/pages/card/card/card'
+				// })
 			}
 		}).catch(err => {});
 	}

@@ -71,10 +71,12 @@
 				onSearch: false,
 				searchWord: '',
 				init: false,
+				from: '',
 			}
 		},
 		onLoad(option) {
 			this.init = option.init
+			this.from = option.from
 			if (!option.init) {
 				this.$store.dispatch('loadUserInfo').then(user => {
 					this.user = user
@@ -99,9 +101,7 @@
 			},
 			selectBrand(brand_id) {
 				this.$http.auth('set_brand', {id: brand_id, init: this.init}).then(res => {
-					uni.redirectTo({
-						url: '/pages/user_center/user_setting/user_setting'
-					})
+					uni.navigateBack()
 				}).catch(err => {})
 			},
 			searchBrand(e) {
@@ -124,7 +124,7 @@
 					return
 				}
 				uni.navigateTo({
-					url: `/pages/brand/brand_create/brand_create?brand_name=${this.searchWord}`
+					url: `/pages/brand/brand_create/brand_create?brand_name=${this.searchWord}&from=${this.from}`
 				})
 			}
 		}

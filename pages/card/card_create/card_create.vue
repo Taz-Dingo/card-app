@@ -9,17 +9,21 @@
 				</view>
 				<view class="form-input">
 					<text class="label">姓名</text>
-					<input placeholder="请输入您的姓名" v-model="user.name"/>
+					<input placeholder="请输入您的姓名" name='name' v-model="user.name"/>
 				</view>
 				<view class="form-input">
 					<text class="label">手机</text>
-					<input placeholder="请输入您的手机号" @input="phoneInput" v-model="user.mobile"/>
+					<input placeholder="请输入您的手机号" name='mobile' @input="phoneInput" v-model="user.mobile" type="number"/>
 				</view>
 				<view class="form-input" v-if="mobileStatus">
 					<text class="label">验证码</text>
-					<input placeholder="请输入验证码" v-model="code"/>
+					<view class="form-box">
+						<input name='code' placeholder="请输入验证码" v-model="code" type="number"/>
+						<text class="gray timer" v-if="leftTime <= 0" @tap="sendCode">获取</text>
+						<text class="gray timer" v-else>{{leftTime}}s</text>
+					</view>
 				</view>
-				<view class="form-input">
+				<view class="form-input" @tap="selectBrand">
 					<text class="label">品牌</text>
 					<view class="brand-select">
 						<text class="gray" v-if="!user.brand_id">请选择品牌</text>
@@ -28,7 +32,7 @@
 					</view>
 				</view>
 				<view class="btn-box">
-					<button class="btn">创建名片</button>
+					<button class="btn" :loading="loading" form-type="submit">创建名片</button>
 				</view>
 			</form>
 		</view>
@@ -46,11 +50,16 @@
 			return {
 				user: {},
 				mobileStatus: false,
-				code: ''
+				code: '',
+				leftTime: 0,
+				timer: null,
+				loading: false
 			};
 		},
-		onLoad() {
-			
+		onShow() {
+			this.$store.dispatch('reloadUserInfo').then(user => {
+				this.user = user
+			})
 		},
 		methods: {
 			phoneInput(e) {
@@ -60,33 +69,71 @@
 				];
 				this.mobileStatus = graceChecker.check({mobile: mobile}, rule);
 			},
+			sendCode() {
+				this.$http.auth('sms', {type: 'register', mobile: this.user.mobile}).then(res => {
+					if (res.data) {
+						this.leftTime = res.data.second ? res.data.second : 0;
+						if (this.leftTime > 0) {
+							this.setTimer()
+						}
+						if (res.data.code) {
+							global.toast('验证码为:' + res.data.code)
+						}
+					}
+				}).catch(err => {})
+			},
+			setTimer() {
+				clearInterval(this.timer)
+				this.timer = setInterval(() => {
+					this.leftTime --;
+					if (this.leftTime <= 0) {
+						this.leftTime = 0
+						clearInterval(this.timer)
+					}
+				}, 1000)
+			},
 			submit(e) {
+				if (this.loading) {
+					return
+				}
 				//定义表单规则
 				var rule = [
 					{name:"name",  checkType : "notnull", checkRule:"",  errorMsg:"请输入您的姓名"},
 					{name:"mobile",  checkType : "notnull", checkRule:"",  errorMsg:"请输入您的手机号"},
+					{name:"code",  checkType : "notnull", checkRule:"",  errorMsg:"请输入验证码"},
 				];
+				
+			
 				//进行表单检查
-				var formData = e.detail.value;
-				var checkRes = graceChecker.check(formData, rule);
+				const formData = e.detail.value;
+				console.log(formData)
+				const checkRes = graceChecker.check(formData, rule);
 				if(checkRes){
-					console.log(this.user)
-					this.$http.auth('user_edit', {user: JSON.stringify(this.user)}).then(res => {
+					if (!this.mobileStatus) {
+						global.toast('手机号格式不正确')
+						return
+					}
+					this.loading = true
+					this.$http.auth('card_create', {username: this.user.name, mobile: this.user.mobile, code: this.code}).then(res => {
 						this.loading = false
-						global.toast('保存成功', () => {
+						global.toast('创建成功', () => {
 							uni.switchTab({
 								url: '/pages/card/card/card'
 							})
-						});
-					}).catch(err => {})
+						})
+					}).catch(err => {
+						this.loading = false
+					})
 				}else{
 					uni.showToast({ title: graceChecker.error, icon: "none" });
 					this.loading = false
 				}
-				
-				
-				
-			}
+			},
+			selectBrand() {
+				uni.navigateTo({
+					url: '/pages/brand/brand_select/brand_select?from=create'
+				})
+			},
 		}
 	}
 </script>
@@ -100,6 +147,9 @@
 	.title {
 		font-size: $fsize-title;
 		color: $tcolor;
+	}
+	.gray {
+		color: gray;
 	}
 	.avatar {
 		display: flex;
@@ -118,14 +168,26 @@
 			margin: 0 10upx;
 			color: #6D6D72;
 		}
+		.form-box {
+			display: flex;
+			justify-content: space-between;
+			flex: 1;
+		}
+		.timer {
+			border: 1upx solid $tcolor;
+			border-radius: 15upx;
+			padding: 0 10upx;
+			white-space:nowrap;
+			background-color: $tcolor;
+			color: #fff;
+			font-size: $fsize3;
+		}
 	}
 	.brand-select {
 		flex: 1;
 		display: flex;
 		justify-content: space-between;	
-		.gray {
-			color: gray;
-		}
+		
 	}
 	.btn-box {
 		.btn {

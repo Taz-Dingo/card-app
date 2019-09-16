@@ -17,7 +17,9 @@ function apiRequest(options) {
 				}
 
 				if (response.data.errcode !== 0) {
-					response.data.errcode === 1000 && global.toast(response.data.message);
+					if (response.data.errcode === 10000) {
+						global.toast(response.data.message);
+					}
 					reject(response.data)
 				} else {
 					resolve(response.data)

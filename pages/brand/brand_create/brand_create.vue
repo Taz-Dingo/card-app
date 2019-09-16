@@ -25,12 +25,13 @@
 			return {
 				brand: '',
 				industry: {},
-				loading: false
+				loading: false,
+				from: ''
 			}
 		},
 		onLoad(option) {
-			console.log(option)
 			this.brand = option.brand_name
+			this.from = option.from
 			if (!this.brand) {
 				uni.redirectTo({
 					url: '/pages/brand/new_brand/new_brand'
@@ -53,10 +54,18 @@
 				this.loading = true
 				this.$http.auth('new_brand', {name: this.brand, industry_id: this.industry.id}).then(res => {
 					this.loading = false
-					global.toast('提交成功')
-					uni.redirectTo({
-						url: '/pages/brand/brand_select/brand_select'
+					global.toast('提交成功', () => {
+						if (this.from !== 'create') {
+							uni.redirectTo({
+								url: '/pages/brand/brand_select/brand_select'
+							})
+						} else {
+							uni.redirectTo({
+								url: '/pages/card/card_create/card_create'
+							})
+						}
 					})
+					
 				}).catch(err => {})
 			},
 			choseIndustry() {
