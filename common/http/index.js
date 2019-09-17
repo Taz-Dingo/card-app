@@ -14,6 +14,7 @@ function apiRequest(options) {
 			if (response.statusCode === 200) {
 				if ([1001, 1002, 1003].indexOf(response.data.errcode) !== -1) {
 					global.loginAuth()
+					return
 				}
 
 				if (response.data.errcode !== 0) {
@@ -40,7 +41,7 @@ function apiRequest(options) {
  * 构建url
  */
 function apiurl(api) {
-	return _config.host + api;
+	return _config.host + 'api/' + api;
 }
 
 function post(url = '', data = {}, config = {}) {
@@ -84,9 +85,8 @@ function image(image) {
 	return new Promise((resolve, reject) => {
 		const token = global.getToken()
 		if (!token) {
-			uni.redirectTo({
-				url: '/pages/user_center/login/login'
-			})
+			global.loginAuth()
+			return
 		}	
 		console.log(image[0])
 		uni.uploadFile({
@@ -102,28 +102,8 @@ function image(image) {
 				if(res.statusCode == 200){
 					let data = JSON.parse(res.data);
 					if ([1001, 1002, 1003].indexOf(data.errcode) !== -1) {
-						// #ifdef H5
-						if (global.is_weixin()) {
-							this.$http.post('wechat_login_url').then(res => {
-								if (res.errcode === 0) {
-									location.href = res.data.url
-								}
-							}).catch(err => {});
-						} else {
-							// uni.redirectTo({
-							// 	url: '/pages/user_center/login/login'
-							// })
-							this.$http.post('demo_login').then(res => {
-								if (res.errcode === 0) {
-									console.log(res.data.auth_token)
-									global.setToken(res.data.auth_token)
-									uni.switchTab({
-										url: '/pages/card/card/card'
-									})
-								}
-							}).catch(err => {});
-						}
-						// #endif		
+						global.loginAuth()
+						return
 					} else {
 						let url = data.data.file_url;
 						resolve(url);
@@ -140,9 +120,8 @@ function file(filePath) {
 	return new Promise((resolve, reject) => {
 		const token = global.getToken()
 		if (!token) {
-			uni.redirectTo({
-				url: '/pages/user_center/login/login'
-			})
+			global.loginAuth()
+			return
 		}	
 		uni.uploadFile({
 			url: _config.host + 'upload_image',
@@ -157,9 +136,8 @@ function file(filePath) {
 				if(res.statusCode == 200){
 					let data = JSON.parse(res.data);
 					if ([1001, 1002, 1003].indexOf(data.errcode) !== -1) {
-						uni.redirectTo({
-							url: '/pages/user_center/login/login',
-						})			
+						global.loginAuth()
+						return
 					} else {
 						let url = data.data.file_url;
 						resolve(url);

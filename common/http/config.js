@@ -1,7 +1,7 @@
 export default{
   //	开发者服务器接口地址
 	 //host: "http://bw.qmshidai.com/api/", 
-	 host: "http://127.0.0.1:8000/api/",
+	 host: "http://127.0.0.1:8000/",
 	 //host: "http://jqc3y8.natappfree.cc/api/",
 	 //	请求的参数	
 	 data: {},

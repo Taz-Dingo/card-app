@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="card-create-page">
 		<view class="card-create">
 			<text class="title">用一张名片</text>
 			<text class="title">开启的无限可能</text>
@@ -53,11 +53,12 @@
 				code: '',
 				leftTime: 0,
 				timer: null,
-				loading: false
+				loading: false,
 			};
 		},
 		onShow() {
 			this.$store.dispatch('reloadUserInfo').then(user => {
+				this.mobileStatus = user.mobile ? true : false
 				this.user = user
 			})
 		},
@@ -100,10 +101,8 @@
 				var rule = [
 					{name:"name",  checkType : "notnull", checkRule:"",  errorMsg:"请输入您的姓名"},
 					{name:"mobile",  checkType : "notnull", checkRule:"",  errorMsg:"请输入您的手机号"},
-					{name:"code",  checkType : "notnull", checkRule:"",  errorMsg:"请输入验证码"},
 				];
 				
-			
 				//进行表单检查
 				const formData = e.detail.value;
 				console.log(formData)
@@ -139,14 +138,23 @@
 </script>
 
 <style lang="scss">
+page, .card-create-page{
+	height: 100%;
+	width: 100%;
+}
+.card-create-page {
+	background-size: 100% auto;
+	background-repeat: no-repeat;
+	background-image: url('~@/static/card_create_bg.jpg');
+}
 .card-create {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding-top: 15%; 
+	padding-top: 15%;
 	.title {
 		font-size: $fsize-title;
-		color: $tcolor;
+		color: #fff;
 	}
 	.gray {
 		color: gray;
@@ -163,6 +171,7 @@
 		margin: 40upx auto;
 		padding: 10upx 20upx;
 		border-radius: 40upx;
+		background-color: $uni-bg-color;
 		.label {
 			min-width: 100upx;
 			margin: 0 10upx;
