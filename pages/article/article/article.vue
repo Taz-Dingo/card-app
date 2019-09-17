@@ -142,6 +142,7 @@
 				this.tabIndex = index
 				this.page = 1
 				this.loadingStatus = 'more'
+				this.articleList = []
 				this.loadArticle()
 			},
 			selectCate(index) {

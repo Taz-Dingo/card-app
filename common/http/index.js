@@ -90,7 +90,7 @@ function image(image) {
 		}	
 		console.log(image[0])
 		uni.uploadFile({
-			url: _config.host + 'upload_image',
+			url: apiurl('upload'),
 			filePath: image[0],
 			name: 'file',
 			header: {
@@ -124,7 +124,7 @@ function file(filePath) {
 			return
 		}	
 		uni.uploadFile({
-			url: _config.host + 'upload_image',
+			url: apiurl('upload'),
 			filePath: filePath,
 			name: 'file',
 			header: {

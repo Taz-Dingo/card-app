@@ -45,7 +45,7 @@
 							title: '上传中'
 						});
 						console.log(tempFilePaths)
-						this.$http.image(tempFilePaths).then(res => {
+						this.$http.file(tempFilePaths).then(res => {
 							uni.hideLoading();
 							this.logo = res
 						}).catch(err => {

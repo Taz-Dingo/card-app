@@ -37,8 +37,8 @@
 		},
 		onLoad() {
 			this.$store.dispatch('loadUserInfo').then(user => {
-				if (user.brand && user.brand.video) {
-					this.video = 'http://player.youku.com/embed/XNDI1ODU2NDI5Mg=='
+				if (user.brand && user.brand.active_video) {
+					this.video = user.brand.active_video
 				}
 			})
 		},
@@ -55,9 +55,13 @@
 							title: '上传中'
 						});
 						console.log(tempFilePath)
-						this.$http.file(tempFilePath).then(res => {
+						this.$http.file(tempFilePath).then(url => {
 							uni.hideLoading();
-							this.logo = res
+							this.$http.auth('set_video', {video: url}).then(res => {
+								this.video = url
+								global.toast('上传成功')
+							}).catch(err => {})
+							this.video = res
 						}).catch(err => {
 							console.log(err)
 							global.toast('上传失败')
@@ -68,18 +72,6 @@
 					}
 				});
 			},
-			submit() {
-				if (!this.videoLink) {
-					global.toast('请先上传视频')
-					return
-				}
-				this.$http.auth('set_video', {video: this.videoLink}).then(res => {
-					this.video = this.videoLink
-					this.$refs.pop.close();
-					console.log(this.video)
-					global.toast('保存成功')
-				}).catch(err => {})
-			}
 		}
 	}
 </script>

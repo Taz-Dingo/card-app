@@ -112,6 +112,10 @@
 						global.toast('手机号格式不正确')
 						return
 					}
+					if (!this.code) {
+						global.toast('请输入验证码')
+						return
+					}
 					this.loading = true
 					this.$http.auth('card_create', {username: this.user.name, mobile: this.user.mobile, code: this.code}).then(res => {
 						this.loading = false

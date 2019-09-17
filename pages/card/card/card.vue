@@ -31,14 +31,14 @@
 			<view class="contact-info">
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe60e;</text>
-					<text class="text">{{user.mobile ? user.mobile : '尚未完善'}}</text>
+					<text class="text">{{user.hide_mobile ? user.hide_mobile : '尚未完善'}}</text>
 					<view class="btn" @tap="callUser">拨打</view>
 				</view>
 			</view>
 			<view class="contact-info">
 				<view class="contact-info-list">
 					<text class="iconfont">&#xe64f;</text>
-					<text class="text">{{user.wechat ? user.wechat : '尚未完善'}}</text>
+					<text class="text">{{user.hide_wechat ? user.hide_wechat : '尚未完善'}}</text>
 					<view class="btn" @tap="copyWechat">复制</view>
 				</view>
 			</view>
@@ -214,6 +214,10 @@
 			},
 			//复制用户微信号
 			copyWechat() {
+				if (!this.user.wechat) {
+					global.toast('用户未设置')
+					return
+				}
 				this.getUserContact('wechat').then(res => {
 					uni.setClipboardData({
 						data: res,
