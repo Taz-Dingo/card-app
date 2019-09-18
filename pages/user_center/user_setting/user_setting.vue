@@ -16,7 +16,7 @@
 					<view class="u-list">
 						<view class="u-list-left required"></view>
 						<view class="u-list-mid">
-							<input type="text" name="mobile" v-model="user.complete_mobile" />
+							<input type="text" name="mobile" disabled v-model="user.mobile" />
 						</view>
 					</view>
 				</view>
@@ -93,6 +93,9 @@
 	import mpvuePicker from '@/components/mpvue-picker/mpvuePicker.vue';
 	import cityData from '@/common/city.data.js';
 	import graceChecker from '@/common/graceChecker.js';
+	// #ifdef H5
+	const jweixin = require('jweixin-module')
+	// #endif
 	export default {
 		components: {
 			buttonSubmit,
@@ -124,11 +127,39 @@
 			},
 			reloadUser() {
 				this.$store.dispatch('reloadUserInfo').then(user => {
-					this.$http.auth('user_contact', {user_id: user.id}).then(res => {
-						user.complete_mobile = res.data.data.mobile;
-						user.wechat = res.data.data.wechat;
-						this.user = user
-					}).catch(err => {})
+					this.user = user
+					if ((!user.lat || !user.lng) && global.is_weixin()) {
+						let apis = ['getLocation']
+						let _this = this
+						this.$http.auth('wechat_jssdk', {apis: apis, url: location.href.split("#")[0], json: true}).then(res => {
+							const config = res.data.config
+							jweixin.config({
+							    debug: config.debug, 
+							    appId: config.appId, // 必填，公众号的唯一标识
+							    timestamp: config.timestamp, // 必填，生成签名的时间戳
+							    nonceStr: config.nonceStr, // 必填，生成签名的随机串
+							    signature: config.signature,// 必填，签名
+							    jsApiList: config.jsApiList // 必填，需要使用的JS接口列表
+							});
+							jweixin.ready(function(){
+							    wx.getLocation({
+							      type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+							      success: (res) => {
+									console.log(res)
+							        _this.user.lat = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+							        _this.user.lng = res.longitude; // 经度，浮点数，
+							      },
+								  fail: (err) => {
+									 alert(JSON.stringify(err))
+								  },
+								  cancel: (res) => {
+									 alert(JSON.stringify(res))
+								  }
+							    });
+							});
+							
+						}).catch(err => {})
+					}
 				})
 			},
 			// 二级联动选择
@@ -159,6 +190,8 @@
 				if(checkRes){
 					this.loading = true
 					console.log(this.user)
+					delete this.user.card
+					delete this.user.brand
 					this.$http.auth('user_edit', {user: JSON.stringify(this.user)}).then(res => {
 						this.loading = false
 						global.toast('保存成功', () => {

@@ -12,6 +12,9 @@
 				@up="upCard"
 				@collect="collectCard"
 			></pack-card>
+			<view class="bgm-btn" :class="{'rotate': bgmPlay}" @tap="bgmSwitch">
+				<text class="iconfont">&#xe625;</text>
+			</view>
 		</view>
 		<view class="gap"></view>
 		<view class="card-handle-box">
@@ -43,9 +46,9 @@
 				</view>
 			</view>
 		</view>
-		<view class="gap"></view>
+		<view class="gap" v-if="user.card && user.card.show_article && recArticles && recArticles.length"></view>
 		<!-- 品牌头条start -->
-		<pack-box :title="'头条'">
+		<pack-box :title="'头条'" v-if="user.card && user.card.show_article && recArticles && recArticles.length">
 			<view slot="title">
 				<text class="iconfont box-title-icon">&#xe6a9;</text>
 			</view>
@@ -63,7 +66,7 @@
 				<text class="iconfont box-title-icon">&#xe64e;</text>
 			</view>
 			<view slot="content">
-				<video class="card-video" :src="user.brand.video" controls></video>
+				<video class="card-video" :src="user.brand.video" controls @play="stopBgm"></video>
 			</view>
 			<view class="gap"></view>
 		</pack-box>
@@ -138,6 +141,8 @@
 				mienImgs: [],
 				video: '',
 				music: '',
+				bgmPlay: false,
+				currentAudio: null
 			}
 		},
 		async onLoad(option) {
@@ -202,6 +207,7 @@
 		onHide() {
 			console.log('hide')
 			uni.setStorageSync('card_user_id', null)
+			this.currentAudio && (this.currentAudio.destroy())
 		},
 		methods: {
 			//打用户电话
@@ -267,10 +273,39 @@
 					this.loadUser(this.user.id);
 				}).catch(err => {});
 			},
+			createBgm() {
+				if (!this.currentAudio) {
+					this.currentAudio = uni.createInnerAudioContext();
+				}
+				this.currentAudio.autoplay = this.user.card.bgm_auto_play ? true : false;
+				this.currentAudio.src = this.user.bgm;
+				this.currentAudio.onPlay(() => {
+					this.bgmPlay = true
+				})
+				this.currentAudio.onPause(() => {
+					this.bgmPlay = false
+				})
+				this.currentAudio.onStop(() => {
+					this.bgmPlay = true
+				})
+			},
+			bgmSwitch() {
+				if (this.currentAudio.paused) {
+					this.currentAudio.play()
+				} else {
+					this.currentAudio.pause()
+				}
+			},
+			stopBgm() {
+				this.currentAudio && this.currentAudio.pause();
+			},
 			async loadUser(user_id) {
 				await this.$http.auth("user_info", {user_id: user_id}).then(res=>{
 						if (res.errcode === 0) {
 							this.user = res.data.data;
+							if (this.user.bgm && this.user.card && this.user.card.bgm_open) {
+								this.createBgm();
+							}
 						}
 				});
 			}
@@ -285,6 +320,28 @@
 	.card-box {
 		padding: 0 $page-padding;
 		margin-top: 16upx;
+	}
+	@keyframes rotate{
+		from{transform: rotate(0deg)}
+	    to{transform: rotate(359deg)}
+	}
+	.bgm-btn {
+		position: fixed;
+		left: 15upx;
+		top: 15upx;
+		height: 50upx;
+		width: 50upx;
+		color: #fff;
+		border-radius: 50%;
+		overflow: hidden;
+		background-color: rgba(0, 0, 0, 0.7);
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		&.rotate {
+			animation: rotate 3s linear infinite;
+		}
 	}
 	.card-handle-box {
 		background-color: $uni-bg-color;

@@ -53,7 +53,7 @@
 				<view class="text">头条设置</view>
 				<view>
 					<text class="tip">开启名片头条</text>
-					<switch :checked="user.card && user.card.show_article" style="transform:scale(0.7)" @change="switchCardArticle" color="#f6375b"/>
+					<switch :checked="user.card && user.card.show_article ? true : false" style="transform:scale(0.7)" @change="switchCardArticle" color="#f6375b"/>
 					<text class="iconfont">&#xe628;</text>
 				</view>
 			</view>

@@ -57,7 +57,7 @@
     },
     "h5" : {
         "title" : "card",
-        "domain" : "http://bw.qmshidai.com",
+        "domain" : "http://mfmuru.natappfree.cc",
         "router" : {
             "base" : "/h5/"
         },
