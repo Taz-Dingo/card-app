@@ -89,6 +89,7 @@ page {
 		background-color: $page-bg;
 		input {
 			background-color: $page-bg;
+			flex: 1;
 		}
 	}
 	.search-result {

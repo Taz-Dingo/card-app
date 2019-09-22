@@ -7,7 +7,7 @@
 			</view>
 		</view>
 		<view class="">
-			<segmented-control :values="navList"></segmented-control>
+			<segmented-control :values="navList" @clickItem="navTap"></segmented-control>
 		</view>
 		<view class="user-list" v-if="userList && userList.length">
 			<view v-for="(user,uIndex) in userList" :key="uIndex">
@@ -34,13 +34,16 @@
 			return {
 				navList: [
 					{
+						key: 'recommend',
 						name: '推荐'
 					},
 					{
+						key: 'industry',
 						name: '同行'
 					},
 				],
 				userList: [],
+				currentNavIndex: 0,
 				loadingStatus: 'more',
 				page: 1,
 			}
@@ -49,12 +52,23 @@
 			this.loadUserList();
 		},
 		methods: {
+			navTap(index) {
+				this.currentNavIndex = index
+				const currentNav = this.navList[index]
+				this.page = 1
+				this.loadingStatus = 'more'
+				this.userList = []
+				this.loadUserList()
+			},
 			loadUserList() {
 				if (this.loadingStatus === 'loading' || this.loadingStatus === 'noMore') {
 					return false
 				}
 				this.loadingStatus = 'loading'
-				this.$http.auth('user_search', {}).then(res => {
+				const currentNav = this.navList[this.currentNavIndex]
+				let param = {}
+				param[currentNav.key] = 1
+				this.$http.auth('user_search', param).then(res => {
 					this.userList = this.userList.concat(res.data.data.data);
 					if (this.page < res.data.data.last_page) {
 						this.loadingStatus = 'more'

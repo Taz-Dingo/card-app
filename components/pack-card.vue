@@ -19,11 +19,11 @@
 						<text class="iconfont">&#xe833;</text>
 						<text>人气: {{popCount}}</text>
 					</view>
-					<view class="user-tag" @tap="upCard">
+					<view class="user-tag" :class="{'on': isUp}" @tap="upCard">
 						<text class="iconfont">&#xe6b4;</text>
 						<text>点赞: {{upCount}}</text>
 					</view>
-					<view class="user-tag" @tap="collectCard">
+					<view class="user-tag" :class="{'on': isCollect}" @tap="collectCard">
 						<text class="iconfont">&#xe71f;</text>
 						<text>收藏: {{collectCount}}</text>
 					</view>
@@ -38,12 +38,12 @@
 					</view>
 				</view>
 			</view>
-			<view class="pack-card-content-qrcode">
+			<!-- <view class="pack-card-content-qrcode">
 				<view class="qrcode">
 					<text class="iconfont">&#xe6d2;</text>
 				</view>
 				<text>名片码</text>
-			</view>
+			</view> -->
 		</view>
 	</view>
 </template>
@@ -66,6 +66,14 @@
 			collectCount: { //收藏
 				type: [Number, String],
 				default: 0
+			},
+			isUp: {
+				type: Boolean,
+				default: false
+			},
+			isCollect: {
+				type: Boolean,
+				default: false
 			},
 			username: {
 				type: String,
@@ -161,6 +169,11 @@
 			flex-direction: column;
 			text-align: center;
 			margin: 0 10upx;
+			&.on {
+				.iconfont {
+					color: yellow;
+				}
+			}
 		}
 		.user-info {
 			display: flex;

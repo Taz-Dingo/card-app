@@ -5,7 +5,7 @@
 				<view class="icon iconfont">&#xe658;</view>
 				<view class="text">LOGO设置</view>
 				<view>
-					<text v-if="brand.logo">
+					<text v-if="brand && brand.logo">
 						<text class="tip com" v-if="!brand.logo_status">审核中</text>
 						<text class="tip" v-else>审核通过</text>
 					</text>
@@ -16,7 +16,7 @@
 				<view class="icon iconfont">&#xe7d1;</view>
 				<view class="text">视频设置</view>
 				<view>
-					<text v-if="brand.video">
+					<text v-if="brand && brand.video">
 						<text class="tip com" v-if="!brand.video_status">审核中</text>
 						<text class="tip" v-else>审核通过</text>
 					</text>
@@ -27,7 +27,7 @@
 				<view class="icon iconfont">&#xe6ba;</view>
 				<view class="text">荣誉设置</view>
 				<view>
-					<text v-if="brand.glory">
+					<text v-if="brand && brand.glory && brand.glory.length">
 						<text class="tip com" v-if="!brand.glory_status">审核中</text>
 						<text class="tip" v-else>审核通过</text>
 					</text>
@@ -82,7 +82,8 @@
 			this.$store.dispatch('loadUserInfo').then(user => {
 				this.user = user
 			})
-			
+		},
+		onShow() {
 			this.$http.auth('brand_status').then(res => {
 				this.brand = res.data.brand
 			}).catch(err => {})
@@ -106,7 +107,7 @@
 						        }
 						    }
 						})
-					} else if (field && this.brand[field] && !this.brand[field + '_status']) {
+					} else if (field && this.brand[field] && this.brand[field].length && !this.brand[field + '_status']) {
 						global.toast('审核中，不能编辑，请耐心等待')
 					} else {
 						resolve()
@@ -131,7 +132,7 @@
 					})
 				}).catch(err => {
 					uni.navigateTo({
-						url: '/pages/user_center/new_brand/new_brand'
+						url: '/pages/brand/new_brand/new_brand'
 					})
 				})
 			},
@@ -142,7 +143,7 @@
 					})
 				}).catch(err => {
 					uni.navigateTo({
-						url: '/pages/user_center/new_brand/new_brand'
+						url: '/pages/brand/new_brand/new_brand'
 					})
 				})
 			}

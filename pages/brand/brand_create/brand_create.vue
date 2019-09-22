@@ -10,7 +10,7 @@
 	  	</view>
 	  	<view class="industry">
 	  		<text class="title required">选择行业</text>
-			<view class="input" @tap="choseIndustry">{{industry.name ? industry.name : '请选择行业'}}</view>
+			<view class="input" @tap="choseIndustry">{{industry ? industry.name : '请选择行业'}}</view>
 	  	</view>
 	  </view>
 	  <view class="btn-box">

@@ -9,6 +9,8 @@
 				:collectCount="user.collect_count"
 				:brandName="user.is_is_founder ? user.brand.name : ''"
 				:logo="user.brand && user.brand.logo ? user.brand.logo : '/static/logo.png'"
+				:isUp="user.is_up"
+				:isCollect="user.is_collect"
 				@up="upCard"
 				@collect="collectCard"
 			></pack-card>
@@ -68,10 +70,9 @@
 			<view slot="content">
 				<video class="card-video" :src="user.brand.video" controls @play="stopBgm"></video>
 			</view>
-			<view class="gap"></view>
 		</pack-box>
 		<!-- 品牌视频介绍end -->
-	
+		<view class="gap" v-if="user.brand && user.brand.video"></view>
 		<!-- 品牌荣誉start -->
 		<pack-box :title="'企业荣誉'" v-if="gloryList && gloryList.length">
 			<view slot="title">
@@ -95,8 +96,10 @@
 				<text class="iconfont box-title-icon">&#xe694;</text>
 			</view>
 			<view slot="content">
-				<view v-for="(img,mIndex) in mienImgs" :key="mIndex">
-					<image :src="img" mode="aspectFit"></image>
+				<view class="mien-imgs">
+					<view v-for="(img,mIndex) in mienImgs" :key="mIndex">
+						<image :src="img.image" mode="aspectFit"></image>
+					</view>
 				</view>
 			</view>
 		</pack-box>
@@ -453,5 +456,10 @@
 			border-radius: 8upx;
 			margin: 0 auto;
 		}
+	}
+	.mien-imgs {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
 	}
 </style>

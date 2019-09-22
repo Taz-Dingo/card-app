@@ -65,7 +65,7 @@
 				}
 			}
 		},
-		onLoad() {
+		onShow() {
 			this.$http.auth('user_count').then(res => {
 				if (res.errcode === 0) {
 					this.count.user = res.data.user_count.toString();

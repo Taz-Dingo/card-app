@@ -5,15 +5,15 @@
 			<text>默认图片</text>
 			<view>
 				<text>是否使用默认图片</text>
-				<switch class="switch" style="transform:scale(0.7)" color="#f6375b" checked></switch>
+				<switch class="switch" style="transform:scale(0.7)" color="#f6375b" :checked="user.card && user.card.use_default_mien ? true : false" @change="statusSwitch"></switch>
 			</view>
 		</view>
 		<view class="i-list">我的图片</view>
 		<view class="img-list">
 			<button-file-add class="add-btn" @click="add"></button-file-add>
 			<view class="img-box" v-for="(img, index) in imgList" :key="index">
-				<image class="image" :src="img" mode=""></image>
-				<view class="btns">
+				<image class="image" :src="img.image" mode=""></image>
+				<view class="btns" v-if="user.is_founder ||img.user_id > 0">
 					<text class="btn" @tap="setTop(index)">置顶</text>
 					<text class="border"></text>
 					<text class="btn" @tap="del(index)">删除</text>
@@ -40,12 +40,16 @@
 				this.user = user
 			})
 			
-			this.$http.auth('brand_material', {field: 'mien'}).then(res => {
-				this.imgList = res.data.mien
-			}).catch(err => {})
+			this.loadData()
 		},
 		methods: {
+			loadData() {
+				this.$http.auth('brand_material', {field: 'mien'}).then(res => {
+					this.imgList = res.data.mien
+				}).catch(err => {})
+			},
 			add() {
+				const _this = this
 				// 上传照片
 				uni.chooseImage({
 					count: 1, // 默认9
@@ -56,9 +60,12 @@
 						uni.showLoading({
 							title: '上传中'
 						});
-						this.$http.image(tempFilePaths).then(res => {
+						this.$http.file(tempFilePaths[0]).then(res => {
 							uni.hideLoading();
-							this.imgList.push(res)
+							this.imgList.unshift({
+								image: res,
+								user_id: _this.user.id
+							})
 							this.updateImgList()
 						}).catch(err => {
 							console.log(err)
@@ -81,8 +88,21 @@
 				this.updateImgList()
 			},
 			updateImgList() {
-				this.$http.auth('set_mien_imgs', {img_list: this.imgList}).then(res => {
+				let imgs = []
+				for (let i in this.imgList) {
+					if (!this.user.is_founder && this.imgList[i].user_id > 0) {
+						imgs.push(this.imgList[i].image)
+					} else if (this.user.is_founder) {
+						imgs.push(this.imgList[i].image)
+					}
+				}
+				this.$http.auth('set_mien_imgs', {img_list: imgs}).then(res => {
 					
+				}).catch(err => {})
+			},
+			statusSwitch(e) {
+				this.$http.auth('set_mien_status', {status: e.target.value ? 1 : 0}).then(res => {
+					this.loadData()
 				}).catch(err => {})
 			}
 		}

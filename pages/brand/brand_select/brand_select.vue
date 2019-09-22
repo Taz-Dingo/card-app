@@ -101,7 +101,15 @@
 			},
 			selectBrand(brand_id) {
 				this.$http.auth('set_brand', {id: brand_id, init: this.init}).then(res => {
-					uni.navigateBack()
+					if (this.from !== 'create') {
+						uni.redirectTo({
+							url: '/pages/user_center/user_setting/user_setting'
+						})
+					} else {
+						uni.redirectTo({
+							url: '/pages/card/card_create/card_create'
+						})
+					}
 				}).catch(err => {})
 			},
 			searchBrand(e) {

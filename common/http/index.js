@@ -41,7 +41,11 @@ function apiRequest(options) {
  * 构建url
  */
 function apiurl(api) {
-	return _config.host + 'api/' + api;
+	return _config.host + 'api/' + api
+}
+
+function clientUrl(page) {
+	return _config.host  + 'h5/#/' + page
 }
 
 function post(url = '', data = {}, config = {}) {
@@ -133,14 +137,19 @@ function file(filePath) {
 			success: uploadFileRes => {},
 			fail: err => {},
 			complete: res => {
+				console.log(res)
 				if(res.statusCode == 200){
 					let data = JSON.parse(res.data);
 					if ([1001, 1002, 1003].indexOf(data.errcode) !== -1) {
 						global.loginAuth()
 						return
 					} else {
-						let url = data.data.file_url;
-						resolve(url);
+						if (data.errcode !== 0) {
+							reject(false)
+						} else {
+							let url = data.data.file_url;
+							resolve(url);
+						}
 					}
 				} else {
 					reject(false);
@@ -154,5 +163,6 @@ export default {
 	post,
 	auth,
 	image,
-	file
+	file,
+	clientUrl
 }

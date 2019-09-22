@@ -8,7 +8,7 @@
 					<image class="image" src="/static/logo1.png" mode="scaleToFill"></image>
 					<text class="tip">-高效扩充人脉宝库 迅速抢占市场先机-</text>
 				</view>
-				<view class="init-protocol">
+				<view class="init-protocol" v-if="hasProtocol">
 					<checkbox-group class="checkgroup">
 						<label class="checkbox">
 							<checkbox value="" checked style="transform: scale(0.7);"/>
@@ -28,13 +28,18 @@
 	export default {
 		data() {
 			return {
-				
+				hasProtocol: true,
 			};
 		},
 		onLoad(option) {
 			if (option.auth_token) {
 				global.setToken(option.auth_token);
 			}
+			
+			this.$store.dispatch('loadSystemInfo').then(config => {
+				console.log(config)
+				this.hasProtocol = config && config.protocol
+			})
 		},
 		methods: {
 			quickStart() {

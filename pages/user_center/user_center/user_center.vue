@@ -12,14 +12,14 @@
 					</view>
 				</view>
 			</view>
-			<navigator class="vip-info" url="/pages/user_center/vip/vip">
+			<!-- <navigator class="vip-info" url="/pages/user_center/vip/vip">
 				<view class="icon iconfont">&#xe7eb;</view>
 				<view class="text">尚未开通</view>
 				<view>
 					<text>开通</text>
 					<text class="iconfont">&#xe628;</text>
 				</view>
-			</navigator>
+			</navigator> -->
 			<navigator class="setting iconfont" url="/pages/user_center/user_setting/user_setting" open-type="navigate">&#xe6ba;</navigator>
 		</view>
 		<view class="list-content">
@@ -85,7 +85,7 @@ page{
 }
 .header{
 	background: #fff;
-	height: 460upx;
+	height: 400upx;
 	background-color: $tcolor;
 	display: flex;
 	flex-direction: column;

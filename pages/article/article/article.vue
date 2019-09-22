@@ -89,7 +89,7 @@
 				page: 1,
 			}
 		},
-		async onLoad() {
+		async onShow() {
 			await this.$http.auth('article_category').then(res => {
 				let category = res.data.data
 				const hisCate = uni.getStorageSync('category_seleced')
@@ -120,6 +120,7 @@
 				]
 				this.tabIndex = 0
 				this.page = 1
+				this.articleList = []
 				
 				this.$store.dispatch("loadUserInfo").then(user => {
 					this.user = user

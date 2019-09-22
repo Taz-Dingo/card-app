@@ -2,7 +2,7 @@
 	<view class="pack-user b-line">
 		<view class="pack-user-box">
 			<view class="avatar">
-				<image class="image" src="/static/avatar_default.jpeg" mode=""></image>
+				<image class="image" :src="user.avatar ? user.avatar : defaultAvatar" mode=""></image>
 			</view>
 			<view class="mid">
 				<view class="">
@@ -15,9 +15,12 @@
 					{{user.brand.name}}
 				</view>
 			</view>
-			<view class="btn-box" :class="{'disabled': user.added}" @tap="add(user)">
+			<view v-if="!diyBtn" class="btn-box" :class="{'disabled': user.added}" @tap="add(user)">
 				<text v-if="!user.added">添加</text>
 				<text v-else>已添加</text>
+			</view>
+			<view v-else>
+				<slot></slot>
 			</view>
 		</view>
 	</view>
@@ -31,11 +34,15 @@
 				default() {
 					return {}
 				},
+			},
+			diyBtn: {
+				type: Boolean,
+				default: false
 			}
 		},
 		data() {
 			return {
-				
+				defaultAvatar: '/static/avatar_default.jpeg'
 			};
 		},
 		methods: {
@@ -69,7 +76,7 @@
 	.mid {
 		flex: 1;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 	}
 	.btn-box {
 		border: 1upx solid $tcolor;

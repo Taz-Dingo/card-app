@@ -3,18 +3,19 @@
 		<view class="nearby-header">
 			<view class="nearby-header-cont">
 				<text class="title-main">事业签名</text>
-				<text class="title-sub">您身边的人脉宝库，助您成功！</text>
-				<button class="btn" @tap="addSign">点击添加</button>
+				<text class="title-sub" v-if="!user.signature">您身边的人脉宝库，助您成功！</text>
+				<button class="btn" v-if="!user.signature" @tap="addSign">点击添加</button>
+				<text class="title-sub" v-if="user.signature">{{user.signature}}</text>
 			</view>
 			<view class="nearby-header-sub">
 				<text>资源就近交换，销售人之间的合作更容易！</text>
 			</view>
 		</view>
 		<view class="gap"></view>
-		<view class="nearby-lists">
+		<view class="nearby-lists" v-if="userList && userList.length">
 			<view v-for="(user,index) in userList" :key="index" class="n-list b-line" @tap="viewUser(user.id)">
 				<view class="avatar">
-					<image class="image" src="/static/avatar_default.jpeg" mode=""></image>
+					<image class="image" :src="user.avatar ? user.avatar : '/static/avatar_default.jpeg'" mode=""></image>
 				</view>
 				<view class="mid">
 					<view class="row">
@@ -28,7 +29,7 @@
 						</view>
 						<view class="sub">
 							<text class="iconfont address-icon">&#xe60f;</text>
-							<text>1.2km</text>
+							<text>{{user.distance}}</text>
 						</view>
 					</view>
 					<view class="row">
@@ -37,38 +38,97 @@
 				</view>
 			</view>
 		</view>
+		<view v-else>
+			<uni-load-more :status="loadingStatus"></uni-load-more>
+		</view>
 	</view>
 </template>
 
 <script>
+	import uniLoadMore from '@/components/uni/uni-load-more.vue'
+	// #ifdef H5
+	const jweixin = require('jweixin-module')
+	// #endif
 	export default {
+		components: {
+			uniLoadMore
+		},
 		data() {
 			return {
+				user: {},
 				userList: [],
 				page: 1,
 				loadingStatus: 'more',
 			}
 		},
-		onLoad() {
-			this.$store.dispatch('loadUserInfo').then(user => {
-				if (!user.lat || !user.lng) {
-					
-				}
+		async onLoad() {
+			await this.initCurrentUser().then(user => {
+				this.user = user
 			})
 			this.loadUser()
 		},
 		methods: {
+			initCurrentUser() {
+				return new Promise((resovel, reject) => {
+					this.$store.dispatch('loadUserInfo').then(user => {
+						if ((!user.lat || !user.lng) && global.is_weixin()) {
+							let apis = ['getLocation']
+							let _this = this
+							this.$http.auth('wechat_jssdk', {apis: apis, url: location.href.split("#")[0], json: true}).then(res => {
+								const config = res.data.config
+								jweixin.config({
+								    debug: config.debug, 
+								    appId: config.appId, // 必填，公众号的唯一标识
+								    timestamp: config.timestamp, // 必填，生成签名的时间戳
+								    nonceStr: config.nonceStr, // 必填，生成签名的随机串
+								    signature: config.signature,// 必填，签名
+								    jsApiList: config.jsApiList // 必填，需要使用的JS接口列表
+								});
+								jweixin.ready(function(){
+								    wx.getLocation({
+								      type: 'gcj02', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+								      success: (res) => {
+									    user.lat = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+									    user.lng = res.longitude; // 经度，浮点数，
+										this.$http.auth('user_edit', {user: JSON.stringify(user)}).then(res => {
+											console.log('坐标更新成功')
+										}).catch(err => {})
+										resovel(user)
+								      },
+									  fail: (err) => {
+										 alert(JSON.stringify(err))
+									  },
+									  cancel: (res) => {
+										 alert(JSON.stringify(res))
+									  }
+								    });
+								});
+							}).catch(err => {})
+						} else {
+							resovel(user)
+						}
+					})
+				})
+			},
 			loadUser() {
-				this.$http.auth('user_search', {page: this.page}).then(res => {
-					this.userList = this.userList.concat(res.data.data.data);
-					if (this.page < res.data.data.last_page) {
-						this.loadingStatus = 'more'
-						this.page ++
-					} else {
-						this.loadingStatus = 'noMore'
-					}
-					console.log(this.loadingStatus)
-				}).catch(err => {})
+				if (this.loadingStatus == 'noMore' || this.loadingStatus === 'loading') {
+					return
+				}
+				this.loadingStatus = 'loading'
+				if (this.user.lat && this.user.lng) {
+					this.$http.auth('user_search', {page: this.page, lat: this.user.lat, lng: this.user.lng}).then(res => {
+						this.userList = this.userList.concat(res.data.data.data);
+						if (this.page < res.data.data.last_page) {
+							this.loadingStatus = 'more'
+							this.page ++
+						} else {
+							this.loadingStatus = 'noMore'
+						}
+						console.log(this.loadingStatus)
+					}).catch(err => {})
+				} else {
+					this.loadingStatus = 'noMore'
+				}
 			},
 			viewUser(user_id) {
 				uni.setStorageSync('card_user_id', user_id)
