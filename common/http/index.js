@@ -12,7 +12,7 @@ function apiRequest(options) {
 			
 			// 状态码200
 			if (response.statusCode === 200) {
-				if ([1001, 1002, 1003].indexOf(response.data.errcode) !== -1) {
+				if ([1001, 1002, 1003, 1004].indexOf(response.data.errcode) !== -1) {
 					global.loginAuth()
 					return
 				}

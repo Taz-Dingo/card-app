@@ -1,6 +1,6 @@
 {
-    "name" : "card",
-    "appid" : "",
+    "name" : "全民时代卡片",
+    "appid" : "__UNI__50E498C",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -57,7 +57,7 @@
     },
     "h5" : {
         "title" : "card",
-        "domain" : "http://mfmuru.natappfree.cc",
+        "domain" : "http://fbqr4y.natappfree.cc",
         "router" : {
             "base" : "/h5/"
         },
